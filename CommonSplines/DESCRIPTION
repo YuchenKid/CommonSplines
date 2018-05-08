@@ -1,10 +1,11 @@
 Package: CommonSplines
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Regression Spline and Smoothing Spline
+Version: 1.0.0
+Authors: Xingchen LIU <e0225109@u.nus.edu>, Yuchen SHI <yuchenshinus@gmail.com>, Xiaozhou Yang <yang_xiaozhou@icloud.com>
+Description: This is an R package that covers commonly seem regression spline and smoothing spline. For regression spline, commonly seen basis functions are provided such as truncated power basis, natural spline basis and B-spline basis. For smoothing spline, penalties on second order derivative are provided, i.e., cubic smoothing spline. 
 Depends: R (>= 3.3.2)
-License: What license is it under?
+Date: 2018-05-11
+License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
