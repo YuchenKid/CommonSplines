@@ -27,14 +27,15 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
   for (x_i in x){
     for (i in 1:nknots){
       # evaluate each basis_function(x, i)
+      basis_function(x_i, i)
     }
   }
 
   # construct predictor basis matrix
-  basis_m = Matrix(length(x), nknots)
+  # basis_m = Matrix(length(x), nknots)
 
   # least sqaure fit
-  fit = lm(y_train ~ (basis_m))
+  # fit = lm(y_train ~ (basis_m))
 
 }
 
@@ -44,9 +45,6 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 #' @param i
 #'
 #' @return
-#' @export
-#'
-#' @examples
 basis_function <- function(x, i)
 {
   if (i == 1){
@@ -60,14 +58,22 @@ basis_function <- function(x, i)
 }
 
 d_k_function <- function(k, x){
-  if (k == K){
+  if (k == nknots){
     0
   } else {
-    d_k = ((x-knot(k))+**3 - (x-knot(K)+**3))/(knot(K)-knot(k))
+    # d_k = ((x-knot(k))+**3 - (x-knot(K)+**3))/(knot(K)-knot(k))
+    print('Not yet lah!')
   }
 }
 
-# prediction based on trained regression model
+#' Prediction based on trained regression model
+#'
+#' @param x_test
+#'
+#' @return
+#' @export
+#'
+#' @examples
 natural_cubic_splines.predict <- function(x_test){
   # Evaluate splines at all x_test
   # Return y_predict values
