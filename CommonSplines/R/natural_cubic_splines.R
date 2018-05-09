@@ -8,10 +8,10 @@
 #' @param x_test The input values at which evaluations are required.
 #' @param df The degree of freedom specified by user, number of knots will be equal to df.
 #' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots
+#' spaced quantiles based on number of knots.
 #'
 #' @return
-#' \item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
+#' \item{y_pred}{A vector of dimension length(x) The prediction vector evaluated at x_test values}
 #'
 #' @export
 #'
@@ -65,7 +65,7 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
   knots <- place_knots(nknots, x_train)
 
   # evaluate basis functions and obtain basis matrix
-  N <- eval_basis_functions(x_train, knots, nknots)
+  N <- natural_cubic_splines.eval_basis(x_train, knots, nknots)
 
   # least sqaure fit
   betas <- (solve(t(N)%*%N))%*%t(N)%*%y_train
@@ -85,8 +85,9 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 #' @return
 #' \item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
 #' @export
-natural_cubic_splines.predict <- function(x_test, betas, knots, nknots){
-  N_test = eval_basis_functions(x_test, knots, nknots)
+natural_cubic_splines.predict <- function(x_test, betas, knots, nknots)
+{
+  N_test = natural_cubic_splines.eval_basis(x_test, knots, nknots)
   y_pred = N_test %*% betas
 
   return(y_pred)
@@ -100,7 +101,8 @@ natural_cubic_splines.predict <- function(x_test, betas, knots, nknots){
 #'
 #' @return A named vector with knot quantiles and values
 #' @export
-place_knots <- function(nknots, x) {
+place_knots <- function(nknots, x)
+{
   if(nknots > 0L) {
     knots <- seq.int(from = 0, to = 1,
                      length.out = nknots + 2L)[-c(1L, nknots + 2L)]
@@ -118,11 +120,13 @@ place_knots <- function(nknots, x) {
 #' @param nknots Number of knots useded in training.
 #'
 #' @return Basis matrix evaluated at each x value
-eval_basis_functions <- function(x, knots, nknots) {
+natural_cubic_splines.eval_basis <- function(x, knots, nknots)
+{
   N <- matrix(0, nrow=length(x), ncol=nknots)
   for (m in 1:length(x)){
     for (n in 1:nknots){
-      N[m, n] <- basis_function(x[m], n, knots, nknots)  # evaluate each basis function
+      # evaluate each basis function
+      N[m, n] <- natural_cubic_splines.basis_function(x[m], n, knots, nknots)
     }
   }
 
@@ -130,15 +134,15 @@ eval_basis_functions <- function(x, knots, nknots) {
 }
 
 
-#' Evalute x based on truncated power basis functions for natural cubic splines
-#'
-#' @param x A single predictor variable value
-#' @param i Location index for x vector.
-#' @param knots Knot location vector.
-#' @param nknots Number of knots useded in training.
-#'
-#' @return Basis function evaluation at x
-basis_function <- function(x, i, knots, nknots)
+# Evalute x based on truncated power basis functions for natural cubic splines
+#
+# @param x A single predictor variable value
+# @param i Location index for x vector.
+# @param knots Knot location vector.
+# @param nknots Number of knots useded in training.
+#
+# @return Basis function evaluation at x
+natural_cubic_splines.basis_function <- function(x, i, knots, nknots)
 {
   if (i == 1) {
     return(1)
@@ -152,7 +156,8 @@ basis_function <- function(x, i, knots, nknots)
 
 
 # k = 1, ..., K-2, where K = nknots
-d_k_function <- function(x, k, knots, nknots){
+d_k_function <- function(x, k, knots, nknots)
+{
   if (k == nknots) {
     return(0)
   } else {

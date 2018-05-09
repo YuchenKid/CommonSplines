@@ -2,47 +2,40 @@
 % Please edit documentation in R/bspline.R
 \name{bsplineBasis}
 \alias{bsplineBasis}
-\title{Regression using B-spline basis}
+\title{Generating B-spline basis}
 \usage{
-bsplineBasis(x, y, x_test, order = 4, innerknots)
+bsplineBasis(x, y, order, innerknots)
 }
 \arguments{
 \item{x}{The input vector of training dataset.}
 
 \item{y}{The output vector of training dataset.}
 
-\item{x_test}{The input values at which evaluations are required.}
-
 \item{order}{The order of B-spline functions. The default is order=4 for cubic B-splines.}
 
-\item{innerknots}{The internal knots that define the spline.}
+\item{innerknots}{The internal knots that define the spline. \code{innerknots} should not contain knots on the boundary.}
 }
 \value{
 A list with the following components:
 \item{beta}{ The coefficients of nonparametric regression.}
 \item{basis}{The B-spline basis matrix of dimension c(length(x), df). df = length(innerknots) + order.}
-\item{f}{The evaluated output at x_test.}
+\item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
+\item{order}{The order of basis functions. order=degree+1}
 }
 \description{
-This function provides nonparametric regressions using B-splines. The B-splines are defined following
+This function generates B-spline basis. The B-splines are defined following
 the recursive formulas due to de Boor. Only univariate input can be used.
 }
 \examples{
 x<-seq(0, 1, 0.001)
 y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 plot(x,y)
-
-innerknots <- c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9)
+innerknots <- seq(0.1, 0.9, 0.1)
 order<-4
-x_test<-seq(0, 1, 0.01)
 
-b_fit<-bspline(x,y,x_test,order,innerknots)
-
-plot(x_test,b_fit$f)
-lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
-
+basis<-bsplineBasis(x,y,order,innerknots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
-for (i in 1: (j+order)){
-lines(x,b_fit$basis[,i])
+for (i in 1: (length(innerknots)+order)){
+  lines(x,basis$basismatrix[,i])
 }
 }
