@@ -2,7 +2,7 @@
 #'
 #' This function provides regressions using cubic splines. The cubic splines are defined as
 #' h1 = 1,h2 = x,h3 = x^2,h4 = x^3,h5 = (x-k1)^3+,h6 = (x-k2)^3+,...,
-#' where k1, k2 and kn are n knots
+#' where k1, k2 and kn are n knots, '+' denotes the positive part.
 #' 
 #' Only univariate input can be used.
 #' 
