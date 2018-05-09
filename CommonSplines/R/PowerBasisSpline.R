@@ -48,7 +48,7 @@ PowerBasisSpline <- function(x,y,x_test,order,innerknots)
       }
     }
   }
-  Beta <- (solve(t(G)%*%G))%*%t(G)%*%y
+  Beta <- (ginv(t(G)%*%G))%*%t(G)%*%y
   
   NumTest <- length(x_test)
   phi <- matrix (0, nrow=NumTest, ncol=(NumKnots+order))
