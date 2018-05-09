@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NULL, intercept = FALSE,
-               Boundary.knots = range(x))
+natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NULL,
+                                        intercept = FALSE, Boundary.knots = range(x_train))
 {
   # get all necessary spline properties
   nknots <- df
@@ -20,49 +20,49 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
     if(nknots > 0L) {
       knots <- seq.int(from = 0, to = 1,
                        length.out = nknots + 2L)[-c(1L, nknots + 2L)]
-      quantile(x, knots, type=1)  # type=1 for computation by inverse of empirical cdf
+      quantile(x_train, knots, type=1)  # type=1 for using inverse of empirical cdf
     }
 
+  N <- matrix(0, nrow=length(x_train), ncol=nknots) # basis matrix
+
   # evaluate basis functions as each x
-  for (x_i in x){
-    for (i in 1:nknots){
+  for (m in 1:length(x_train)){
+    for (n in 1:nknots){
       # evaluate each basis_function(x, i)
-      basis_function(x_i, i)
+      N[m, n] <- basis_function(x_train[m], n)
     }
   }
 
-  # construct predictor basis matrix
-  # basis_m = Matrix(length(x), nknots)
-
   # least sqaure fit
-  # fit = lm(y_train ~ (basis_m))
+  betas <- (solve(t(N)%*%N))%*%t(N)%*%y_train
 
+  return(list('N' = N, 'betas' = betas))
 }
 
 #' Evalute x based on truncated power basis functions for natural cubic splines
 #'
 #' @param x
-#' @param i
+#' @param i,i = 1, ..., length(x)
 #'
 #' @return
 basis_function <- function(x, i)
 {
   if (i == 1){
-   1
+   return(1)
   } else if (i == 2){
-   x
+   return(x)
   } else {
-    d_k_function(k=i-2, x)
+    return(d_k_function(x, k=i-2) - d_k_function(x, k=nknots-1))
   }
-
 }
 
-d_k_function <- function(k, x){
+# k = 1, ..., K-2, where K = nknots
+d_k_function <- function(x, k){
   if (k == nknots){
-    0
+    return(0)
   } else {
     d_k = (max(0,x-knots[k])^3 - max(0,x-knots[nknots])^3)/(knots[nknots]-knots[k])
-    print(d_k)
+    return(d_k)
   }
 }
 
@@ -75,7 +75,14 @@ d_k_function <- function(k, x){
 #' @export
 #'
 #' @examples
-natural_cubic_splines.predict <- function(x_test){
+natural_cubic_splines.predict <- function(x_test, betas){
   # Evaluate splines at all x_test
   # Return y_predict values
+
+
+
+
 }
+
+
+
