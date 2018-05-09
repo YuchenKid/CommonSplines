@@ -6,9 +6,9 @@
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
-#' @param df The degree of freedom specified by user, number of knots will be equal to df.
-#' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots.
+#' @param df The degree of freedom specified by user. Required. Number of knots will be equal to df.
+#' @param knots Vector, knots location in terms of x values. Optional. When it is specified, length
+#' must match number of knots/degree of freedom. Default will be evenly spaced quantiles based on number of knots.
 #'
 #' @return
 #' \item{y_pred}{A vector of dimension length(x) The prediction vector evaluated at x_test values}
@@ -19,14 +19,15 @@
 #' x_train <-seq(0, 1, 0.001)
 #' y_train <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 #' plot(x,y)
-#' df <- 10
+#' df <- 5
+#' knots <- c(seq(0, 1, by=0.2))
 #' x_test <- seq(0, 1, 0.01)
-#' y_pred <- natural_cubic_splines(x, y, x_test, df)
+#' y_pred <- natural_cubic_splines(x, y, x_test, df, knots)
 #' plot(x_test,y_pred)
 #' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
 {
-  train_result <- natural_cubic_splines.train(x_train, y_train, df = df)
+  train_result <- natural_cubic_splines.train(x_train, y_train, df = df, knots = knots)
   y_pred <- natural_cubic_splines.predict(x_test, train_result$betas,
                                           train_result$knots, nknots = df)
   return(y_pred)
@@ -62,7 +63,10 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 {
   # get all necessary spline properties
   nknots <- df
-  knots <- place_knots(nknots, x_train)
+
+  if (is.null(knots)) {
+    knots <- place_knots(nknots, x_train)
+  }
 
   # evaluate basis functions and obtain basis matrix
   N <- natural_cubic_splines.eval_basis(x_train, knots, nknots)
