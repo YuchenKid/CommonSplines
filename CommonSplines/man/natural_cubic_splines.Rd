@@ -16,10 +16,10 @@ natural_cubic_splines(x_train, y_train, x_test, df = NULL, knots = NULL)
 \item{df}{The degree of freedom specified by user, number of knots will be equal to df.}
 
 \item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
-spaced quantiles based on number of knots}
+spaced quantiles based on number of knots.}
 }
 \value{
-\item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
+\item{y_pred}{A vector of dimension length(x) The prediction vector evaluated at x_test values}
 }
 \description{
 This function provides regressions using natural cubic splines with truncated power basis functions.
