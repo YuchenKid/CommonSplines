@@ -32,6 +32,7 @@ natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = N
   return(y_pred)
 }
 
+
 #' Generate an evaluated basis matrix for natural cubic splines
 #'
 #' @param x_train The input vector of training dataset.
@@ -61,12 +62,7 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 {
   # get all necessary spline properties
   nknots <- df
-  knots <-
-    if(nknots > 0L) {
-      knots <- seq.int(from = 0, to = 1,
-                       length.out = nknots + 2L)[-c(1L, nknots + 2L)]
-      quantile(x_train, knots, type=1)  # type=1 for using inverse of empirical cdf
-    }
+  knots <- place_knots(nknots, x_train)
 
   # evaluate basis functions and obtain basis matrix
   N <- eval_basis_functions(x_train, knots, nknots)
@@ -97,6 +93,23 @@ natural_cubic_splines.predict <- function(x_test, betas, knots, nknots){
 }
 
 
+#' Find evenly spaced out knots by quantile
+#'
+#' @param nknots Number of knots to be located.
+#' @param x Data vector on which knots are placed.
+#'
+#' @return A named vector with knot quantiles and values
+#' @export
+place_knots <- function(nknots, x) {
+  if(nknots > 0L) {
+    knots <- seq.int(from = 0, to = 1,
+                     length.out = nknots + 2L)[-c(1L, nknots + 2L)]
+    quantile(x, knots, type=1)  # type=1 for using inverse of empirical cdf
+  }
+  return(knots)
+}
+
+
 #' Evaluate basis functions as each x and return the evaluated basis matrix N
 #'
 #' @param x Predictor variable vector
@@ -115,6 +128,7 @@ eval_basis_functions <- function(x, knots, nknots) {
 
   return(N)
 }
+
 
 #' Evalute x based on truncated power basis functions for natural cubic splines
 #'
@@ -135,6 +149,7 @@ basis_function <- function(x, i, knots, nknots)
            - d_k_function(x, k=nknots-1, knots, nknots))
   }
 }
+
 
 # k = 1, ..., K-2, where K = nknots
 d_k_function <- function(x, k, knots, nknots){
