@@ -1,6 +1,9 @@
 #' Regression using cubic spline
 #'
-#' This function provides regressions using cubic splines. The cubic splines are defined following
+#' This function provides regressions using cubic splines. The cubic splines are defined as
+#' h1 = 1,h2 = x,h3 = x^2,h4 = x^3,h5 = (x-k1)^3+,h6 = (x-k2)^3+,...,
+#' where k1, k2 and kn are n knots
+#' 
 #' Only univariate input can be used.
 #' 
 #' @param x The input vector of training dataset.
@@ -21,10 +24,11 @@
 #' set.seed(1)
 #' y1 <- a*sin(b*t)+c.unif*amp # uniform error
 #' innerknots <- 2*pi*c(1/4,2/4,3/4)
-#' solution <- CubicPowerBasisSpline(t,y2,t,innerknots)
+#' solution <- CubicPowerBasisSpline(t,y1,t,innerknots)
 #' y.hat <- solution$f
 #' plot(t, y1, t="l")
 #' lines(t, y.hat, col=4)
+#' @export
 CubicPowerBasisSpline <- function(x,y,x_test,innerknots)
 {
   innerknots <- unique(sort(innerknots))
