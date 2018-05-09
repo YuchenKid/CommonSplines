@@ -61,10 +61,11 @@ d_k_function <- function(k, x){
   if (k == nknots){
     0
   } else {
-    # d_k = ((x-knot(k))+**3 - (x-knot(K)+**3))/(knot(K)-knot(k))
-    print('Not yet lah!')
+    d_k = (max(0,x-knots[k])^3 - max(0,x-knots[nknots])^3)/(knots[nknots]-knots[k])
+    print(d_k)
   }
 }
+
 
 #' Prediction based on trained regression model
 #'
