@@ -4,10 +4,19 @@
 \alias{basis_function}
 \title{Evalute x based on truncated power basis functions for natural cubic splines}
 \usage{
-basis_function(x, i)
+basis_function(x, i, knots, nknots)
 }
 \arguments{
-\item{i, i}{= 1, ..., length(x)}
+\item{x}{A single predictor variable value}
+
+\item{i}{Location index for x vector.}
+
+\item{knots}{Knot location vector.}
+
+\item{nknots}{Number of knots useded in training.}
+}
+\value{
+Basis function evaluation at x
 }
 \description{
 Evalute x based on truncated power basis functions for natural cubic splines

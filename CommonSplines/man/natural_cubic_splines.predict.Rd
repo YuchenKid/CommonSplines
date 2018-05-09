@@ -4,10 +4,20 @@
 \alias{natural_cubic_splines.predict}
 \title{Prediction based on trained regression model}
 \usage{
-natural_cubic_splines.predict(x_test, betas)
+natural_cubic_splines.predict(x_test, betas, knots, nknots)
 }
 \arguments{
-\item{x_test}{}
+\item{x_test}{The input values at which evaluations are required.}
+
+\item{betas}{Least sqaure fit parameters obtained from training.}
+
+\item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
+spaced quantiles based on number of knots}
+
+\item{nknots}{Number of knots used in training.}
+}
+\value{
+\item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
 }
 \description{
 Prediction based on trained regression model
