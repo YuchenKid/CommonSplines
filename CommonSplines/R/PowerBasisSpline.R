@@ -1,6 +1,6 @@
 #' Regression using Power Basis spline
 #'
-#' This function is a generalization of CubicPowerBasisSpline
+#' This function is a generalization of CubicPowerBasisSpline with arbitrary order
 #' 
 #' Only univariate input can be used.
 #' 
@@ -11,7 +11,7 @@
 #' @param innerknots The internal knots that define the spline.
 #' @return A list with the following components:
 #' \item{beta}{ The coefficients of nonparametric regression.}
-#' \item{basis}{The cubic spline basis matrix of dimension c(length(x), NumKnots+4)}
+#' \item{basis}{The spline basis matrix of dimension c(length(x), NumKnots+order)}
 #' \item{f}{The evaluated output at x_test.}
 #' @examples
 #' n <- 100
@@ -24,12 +24,12 @@
 #' y1 <- a*sin(b*t)+c.unif*amp # uniform error
 #' innerknots <- 2*pi*c(1/4,2/4,3/4)
 #' order <- 4
-#' solution <- CubicPowerBasisSpline(t,y1,t,order,innerknots)
+#' solution <- PowerBasisSpline(t,y1,t,order,innerknots)
 #' y.hat <- solution$f
 #' plot(t, y1, t="l")
 #' lines(t, y.hat, col=2)
 #' @export
-CubicPowerBasisSpline <- function(x,y,x_test,order,innerknots)
+PowerBasisSpline <- function(x,y,x_test,order,innerknots)
 {
   innerknots <- unique(sort(innerknots))
   NumX <- length(x)
@@ -55,7 +55,7 @@ CubicPowerBasisSpline <- function(x,y,x_test,order,innerknots)
   for(m in 1:NumTest){
     for(n in 1:(NumKnots+order)){
       if(n <= order){
-        phi[m,n] <- x_test[m]^(order-1)
+        phi[m,n] <- x_test[m]^(n-1)
       }
       else{
         temp <- (x_test[m]-innerknots[n-order])^(order-1)
