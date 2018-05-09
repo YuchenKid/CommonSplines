@@ -2,6 +2,7 @@
 
 export(CubicPowerBasisSpline)
 export(bsplineBasis)
+export(bsplineFitting)
 export(natural_cubic_splines)
 export(natural_cubic_splines.predict)
 export(natural_cubic_splines.train)
