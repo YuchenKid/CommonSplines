@@ -10,7 +10,7 @@
 #' natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
 #' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
 #' @param knots Breakpoints that define the spline.
-#' The default is five knots at uniform quantiles (0, 25, 50, 75, 100th).
+#' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 #' Typical values are the mean or median for one knot, quantiles for more knots.
 #'
 #' @return
@@ -84,11 +84,9 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
   } else if (is.null(df)) {  # knots is specified
     nknots <- length(knots)
     knots <- quantile(x_train, knots, type=1)
-    print(knots)
   } else if (is.null(knots)) {
     nknots <- df + 1
     knots <- place_knots(nknots, x_train)
-    print(knots)
   }
 
   # evaluate basis functions and obtain basis matrix
