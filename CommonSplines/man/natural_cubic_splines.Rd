@@ -25,7 +25,7 @@ Typical values are the mean or median for one knot, quantiles for more knots.}
 \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 }
 \description{
-This function provides regressions using natural cubic splines with truncated power basis functions.
+This function provides regression using natural cubic splines with truncated power basis functions.
 Only univariate input can be used.
 }
 \examples{
