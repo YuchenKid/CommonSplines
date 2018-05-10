@@ -4,37 +4,38 @@
 \alias{natural_cubic_splines.train}
 \title{Generate an evaluated basis matrix for natural cubic splines}
 \usage{
-natural_cubic_splines.train(x_train, y_train, df = NULL, knots = NULL,
-  intercept = FALSE)
+natural_cubic_splines.train(x_train, y_train, df = NULL, knots = NULL)
 }
 \arguments{
 \item{x_train}{The input vector of training dataset.}
 
 \item{y_train}{The output vector of training dataset.}
 
-\item{df}{The degree of freedom specified by user, number of knots will be equal to df.}
+\item{df}{Degrees of freedom. One can supply df rather than knots;
+natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.}
 
-\item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
-spaced quantiles based on number of knots}
-
-\item{intercept}{Default false, do not change.}
+\item{knots}{Breakpoints that define the spline, in terms of quantiles of x.
+The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
+Typical values are the mean or median for one knot, quantiles for more knots.}
 }
 \value{
 A list of following components:
-\item{knots} A vector of knot locations
-\item{N} Basis matrix evaluated at each x value
-\item{betas} Least sqaure fit parameters
+\item{nknots}{Number of knots.}
+\item{knots}{A vector of knot locations.}
+\item{N}{Basis matrix evaluated at each x value.}
+\item{betas}{Least sqaure fit parameters.}
 }
 \description{
 Generate an evaluated basis matrix for natural cubic splines
 }
 \examples{
-x_train <-seq(0, 1, 0.001)
-y_train <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
-plot(x,y)
+x_train <- seq(1, 10, 0.1)
+y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
+plot(x_train,y_train)
+x_test <- seq(1, 10, 0.1)
 df <- 10
-x_test <- seq(0, 1, 0.01)
-train_result <- natural_cubic_splines.train(x, y, df)
+train_result <- natural_cubic_splines.train(x_train, y_train, df)
 print(train_result$betas)
 print(train_result$N[1:5,1:5])
 }

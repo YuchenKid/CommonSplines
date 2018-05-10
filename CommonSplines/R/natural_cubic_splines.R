@@ -1,34 +1,48 @@
 #' Regression using natural cubic splines
 #'
-#' This function provides regressions using natural cubic splines with truncated power basis functions.
+#' This function provides regression using natural cubic splines with truncated power basis functions.
 #' Only univariate input can be used.
 #'
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
-#' @param df The degree of freedom specified by user, number of knots will be equal to df.
-#' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots
+#' @param df Degrees of freedom. One can supply df rather than knots;
+#' natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+#' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
+#' @param knots Breakpoints that define the spline.
+#' The default is five knots at uniform quantiles (0, 25, 50, 75, 100th).
+#' Typical values are the mean or median for one knot, quantiles for more knots.
 #'
 #' @return
-#' \item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
+#' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #'
 #' @export
 #'
 #' @examples
-#' x_train <-seq(0, 1, 0.001)
-#' y_train <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
-#' plot(x,y)
+#' x_train <- seq(1, 10, 0.1)
+#' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
+#' plot(x_train,y_train)
+#' x_test <- seq(1, 10, 0.1)
+#' lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
+#'
+#' df <- 2
+#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' lines(x_test,y_pred, col='blue')
+#' df <- 4
+#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' lines(x_test,y_pred, col='green')
 #' df <- 10
-#' x_test <- seq(0, 1, 0.01)
-#' y_pred <- natural_cubic_splines(x, y, x_test, df)
-#' plot(x_test,y_pred)
-#' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
+#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' lines(x_test,y_pred, col='black')
+#' legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
+#' legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
+#' title('Smoothing Comparison of Different Degrees of Freedom')
 natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
 {
-  train_result <- natural_cubic_splines.train(x_train, y_train, df = df)
+  train_result <- natural_cubic_splines.train(x_train, y_train,
+                                              df = df, knots = knots)
   y_pred <- natural_cubic_splines.predict(x_test, train_result$betas,
-                                          train_result$knots, nknots = df)
+                                          train_result$knots, train_result$nknots)
   return(y_pred)
 }
 
@@ -37,40 +51,54 @@ natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = N
 #'
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
-#' @param df The degree of freedom specified by user, number of knots will be equal to df.
-#' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots
-#' @param intercept Default false, do not change.
+#' @param df Degrees of freedom. One can supply df rather than knots;
+#' natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+#' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
+#' @param knots Breakpoints that define the spline, in terms of quantiles of x.
+#' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
+#' Typical values are the mean or median for one knot, quantiles for more knots.
 #'
 #' @return A list of following components:
-#' \item{knots} A vector of knot locations
-#' \item{N} Basis matrix evaluated at each x value
-#' \item{betas} Least sqaure fit parameters
+#' \item{nknots}{Number of knots.}
+#' \item{knots}{A vector of knot locations.}
+#' \item{N}{Basis matrix evaluated at each x value.}
+#' \item{betas}{Least sqaure fit parameters.}
 #' @export
 #'
 #' @examples
-#' x_train <-seq(0, 1, 0.001)
-#' y_train <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
-#' plot(x,y)
+#' x_train <- seq(1, 10, 0.1)
+#' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
+#' plot(x_train,y_train)
+#' x_test <- seq(1, 10, 0.1)
 #' df <- 10
-#' x_test <- seq(0, 1, 0.01)
-#' train_result <- natural_cubic_splines.train(x, y, df)
+#' train_result <- natural_cubic_splines.train(x_train, y_train, df)
 #' print(train_result$betas)
 #' print(train_result$N[1:5,1:5])
-natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NULL,
-                                        intercept = FALSE)
+natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NULL)
 {
   # get all necessary spline properties
-  nknots <- df
-  knots <- place_knots(nknots, x_train)
+  if (is.null(df) & is.null(knots)) {  # neither is specified
+    df <- 4  # Default 4 degrees of freedom
+    nknots <- df + 1
+    knots <- place_knots(nknots, x_train)
+  } else if (is.null(df)) {  # knots is specified
+    nknots <- length(knots)
+    knots <- quantile(x_train, knots, type=1)
+    print(knots)
+  } else if (is.null(knots)) {
+    nknots <- df + 1
+    knots <- place_knots(nknots, x_train)
+    print(knots)
+  }
 
   # evaluate basis functions and obtain basis matrix
-  N <- eval_basis_functions(x_train, knots, nknots)
+  N <- natural_cubic_splines.eval_basis(x_train, knots, nknots)
 
   # least sqaure fit
   betas <- (solve(t(N)%*%N))%*%t(N)%*%y_train
 
-  return(list('knots' = knots, 'N' = N, 'betas' = betas))
+  return(list('nknots' = nknots, 'knots' = knots,
+              'N' = N, 'betas' = betas))
 }
 
 
@@ -79,32 +107,37 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 #' @param x_test The input values at which evaluations are required.
 #' @param betas Least sqaure fit parameters obtained from training.
 #' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots
+#' spaced quantiles based on number of knots.
 #' @param nknots Number of knots used in training.
 #'
 #' @return
-#' \item{y_pred}{A vector of dimension length(x)The prediction vector evaluated at x_test values}
+#' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #' @export
-natural_cubic_splines.predict <- function(x_test, betas, knots, nknots){
-  N_test = eval_basis_functions(x_test, knots, nknots)
+natural_cubic_splines.predict <- function(x_test, betas, knots, nknots)
+{
+  N_test = natural_cubic_splines.eval_basis(x_test, knots, nknots)
   y_pred = N_test %*% betas
 
   return(y_pred)
 }
 
 
-#' Find evenly spaced out knots by quantile
+#' Find evenly spaced knots by quantile
+#'
+#' Knots found include boundary knots at 0th and 100th quantile.
 #'
 #' @param nknots Number of knots to be located.
 #' @param x Data vector on which knots are placed.
 #'
-#' @return A named vector with knot quantiles and values
+#' @return A named vector with knot quantiles and values.
 #' @export
-place_knots <- function(nknots, x) {
+place_knots <- function(nknots, x)
+{
   if(nknots > 0L) {
     knots <- seq.int(from = 0, to = 1,
-                     length.out = nknots + 2L)[-c(1L, nknots + 2L)]
-    quantile(x, knots, type=1)  # type=1 for using inverse of empirical cdf
+                     #length.out = nknots + 2L)[-c(1L, nknots + 2L)]
+                     length.out = nknots)
+    knots <- quantile(x, knots, type=1)  # type=1 for using inverse of empirical cdf
   }
   return(knots)
 }
@@ -112,17 +145,19 @@ place_knots <- function(nknots, x) {
 
 #' Evaluate basis functions as each x and return the evaluated basis matrix N
 #'
-#' @param x Predictor variable vector
+#' @param x Predictor variable vector.
 #' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots
+#' spaced quantiles based on number of knots.
 #' @param nknots Number of knots useded in training.
 #'
-#' @return Basis matrix evaluated at each x value
-eval_basis_functions <- function(x, knots, nknots) {
+#' @return Basis matrix evaluated at each x value.
+natural_cubic_splines.eval_basis <- function(x, knots, nknots)
+{
   N <- matrix(0, nrow=length(x), ncol=nknots)
   for (m in 1:length(x)){
     for (n in 1:nknots){
-      N[m, n] <- basis_function(x[m], n, knots, nknots)  # evaluate each basis function
+      # evaluate each basis function
+      N[m, n] <- natural_cubic_splines.basis_function(x[m], n, knots, nknots)
     }
   }
 
@@ -130,15 +165,15 @@ eval_basis_functions <- function(x, knots, nknots) {
 }
 
 
-#' Evalute x based on truncated power basis functions for natural cubic splines
-#'
-#' @param x A single predictor variable value
-#' @param i Location index for x vector.
-#' @param knots Knot location vector.
-#' @param nknots Number of knots useded in training.
-#'
-#' @return Basis function evaluation at x
-basis_function <- function(x, i, knots, nknots)
+# Evalute x based on truncated power basis functions for natural cubic splines
+#
+# @param x A single predictor variable value
+# @param i Location index for x vector.
+# @param knots Knot location vector.
+# @param nknots Number of knots useded in training.
+#
+# @return Basis function evaluation at x
+natural_cubic_splines.basis_function <- function(x, i, knots, nknots)
 {
   if (i == 1) {
     return(1)
@@ -152,7 +187,8 @@ basis_function <- function(x, i, knots, nknots)
 
 
 # k = 1, ..., K-2, where K = nknots
-d_k_function <- function(x, k, knots, nknots){
+d_k_function <- function(x, k, knots, nknots)
+{
   if (k == nknots) {
     return(0)
   } else {
