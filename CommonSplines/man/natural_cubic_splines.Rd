@@ -13,25 +13,38 @@ natural_cubic_splines(x_train, y_train, x_test, df = NULL, knots = NULL)
 
 \item{x_test}{The input values at which evaluations are required.}
 
-\item{df}{The degree of freedom specified by user, number of knots will be equal to df.}
+\item{df}{Degrees of freedom. One can supply df rather than knots;
+natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.}
 
-\item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
-spaced quantiles based on number of knots.}
+\item{knots}{Breakpoints that define the spline.
+The default is five knots at uniform quantiles (0, 25, 50, 75, 100th).
+Typical values are the mean or median for one knot, quantiles for more knots.}
 }
 \value{
-\item{y_pred}{A vector of dimension length(x) The prediction vector evaluated at x_test values}
+\item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 }
 \description{
 This function provides regressions using natural cubic splines with truncated power basis functions.
 Only univariate input can be used.
 }
 \examples{
-x_train <-seq(0, 1, 0.001)
-y_train <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
-plot(x,y)
+x_train <- seq(1, 10, 0.1)
+y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
+plot(x_train,y_train)
+x_test <- seq(1, 10, 0.1)
+lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
+
+df <- 2
+y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+lines(x_test,y_pred, col='blue')
+df <- 4
+y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+lines(x_test,y_pred, col='green')
 df <- 10
-x_test <- seq(0, 1, 0.01)
-y_pred <- natural_cubic_splines(x, y, x_test, df)
-plot(x_test,y_pred)
-lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
+y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+lines(x_test,y_pred, col='black')
+legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
+legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
+title('Smoothing Comparison of Different Degrees of Freedom')
 }

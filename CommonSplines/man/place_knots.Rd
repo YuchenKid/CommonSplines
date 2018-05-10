@@ -2,7 +2,7 @@
 % Please edit documentation in R/natural_cubic_splines.R
 \name{place_knots}
 \alias{place_knots}
-\title{Find evenly spaced out knots by quantile}
+\title{Find evenly spaced knots by quantile}
 \usage{
 place_knots(nknots, x)
 }
@@ -12,8 +12,8 @@ place_knots(nknots, x)
 \item{x}{Data vector on which knots are placed.}
 }
 \value{
-A named vector with knot quantiles and values
+A named vector with knot quantiles and values.
 }
 \description{
-Find evenly spaced out knots by quantile
+Knots found include boundary knots at 0th and 100th quantile.
 }

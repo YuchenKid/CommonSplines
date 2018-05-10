@@ -7,15 +7,15 @@
 natural_cubic_splines.eval_basis(x, knots, nknots)
 }
 \arguments{
-\item{x}{Predictor variable vector}
+\item{x}{Predictor variable vector.}
 
 \item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
-spaced quantiles based on number of knots}
+spaced quantiles based on number of knots.}
 
 \item{nknots}{Number of knots useded in training.}
 }
 \value{
-Basis matrix evaluated at each x value
+Basis matrix evaluated at each x value.
 }
 \description{
 Evaluate basis functions as each x and return the evaluated basis matrix N
