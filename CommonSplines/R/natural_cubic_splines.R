@@ -7,7 +7,7 @@
 #' @param y_train The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
 #' @param df Degrees of freedom. One can supply df rather than knots;
-#' natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+#' ncs() then chooses (df + 1) knots at uniform quantiles of x.
 #' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
 #' @param knots Breakpoints that define the spline.
 #' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
@@ -26,22 +26,22 @@
 #' lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
 #'
 #' df <- 2
-#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' y_pred <- ncs(x_train, y_train, x_test, df)
 #' lines(x_test,y_pred, col='blue')
 #' df <- 4
-#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' y_pred <- ncs(x_train, y_train, x_test, df)
 #' lines(x_test,y_pred, col='green')
 #' df <- 10
-#' y_pred <- natural_cubic_splines(x_train, y_train, x_test, df)
+#' y_pred <- ncs(x_train, y_train, x_test, df)
 #' lines(x_test,y_pred, col='black')
 #' legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
 #' legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
 #' title('Smoothing Comparison of Different Degrees of Freedom')
-natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
+ncs <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
 {
-  train_result <- natural_cubic_splines.train(x_train, y_train,
+  train_result <- ncs_train(x_train, y_train,
                                               df = df, knots = knots)
-  y_pred <- natural_cubic_splines.predict(x_test, train_result$betas,
+  y_pred <- ncs_predict(x_test, train_result$betas,
                                           train_result$knots, train_result$nknots)
   return(y_pred)
 }
@@ -52,7 +52,7 @@ natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = N
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param df Degrees of freedom. One can supply df rather than knots;
-#' natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
+#' ncs() then chooses (df + 1) knots at uniform quantiles of x.
 #' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
 #' @param knots Breakpoints that define the spline, in terms of quantiles of x.
 #' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
@@ -71,10 +71,10 @@ natural_cubic_splines <- function(x_train, y_train, x_test, df = NULL, knots = N
 #' plot(x_train,y_train)
 #' x_test <- seq(1, 10, 0.1)
 #' df <- 10
-#' train_result <- natural_cubic_splines.train(x_train, y_train, df)
+#' train_result <- ncs_train(x_train, y_train, df)
 #' print(train_result$betas)
 #' print(train_result$N[1:5,1:5])
-natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NULL)
+ncs_train <- function(x_train, y_train, df = NULL, knots = NULL)
 {
   # get all necessary spline properties
   if (is.null(df) & is.null(knots)) {  # neither is specified
@@ -90,7 +90,7 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
   }
 
   # evaluate basis functions and obtain basis matrix
-  N <- natural_cubic_splines.eval_basis(x_train, knots, nknots)
+  N <- ncs_eval_basis(x_train, knots, nknots)
 
   # least sqaure fit
   betas <- (ginv(t(N)%*%N))%*%t(N)%*%y_train
@@ -111,9 +111,9 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
 #' @return
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #' @export
-natural_cubic_splines.predict <- function(x_test, betas, knots, nknots)
+ncs_predict <- function(x_test, betas, knots, nknots)
 {
-  N_test = natural_cubic_splines.eval_basis(x_test, knots, nknots)
+  N_test = ncs_eval_basis(x_test, knots, nknots)
   y_pred = N_test %*% betas
 
   return(y_pred)
@@ -149,13 +149,13 @@ place_knots <- function(nknots, x)
 #' @param nknots Number of knots useded in training.
 #'
 #' @return Basis matrix evaluated at each x value.
-natural_cubic_splines.eval_basis <- function(x, knots, nknots)
+ncs_eval_basis <- function(x, knots, nknots)
 {
   N <- matrix(0, nrow=length(x), ncol=nknots)
   for (m in 1:length(x)){
     for (n in 1:nknots){
       # evaluate each basis function
-      N[m, n] <- natural_cubic_splines.basis_function(x[m], n, knots, nknots)
+      N[m, n] <- ncs_eval_single_basis(x[m], n, knots, nknots)
     }
   }
 
@@ -171,7 +171,7 @@ natural_cubic_splines.eval_basis <- function(x, knots, nknots)
 # @param nknots Number of knots useded in training.
 #
 # @return Basis function evaluation at x
-natural_cubic_splines.basis_function <- function(x, i, knots, nknots)
+ncs_eval_single_basis <- function(x, i, knots, nknots)
 {
   if (i == 1) {
     return(1)
