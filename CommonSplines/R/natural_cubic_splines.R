@@ -76,6 +76,7 @@ ncs <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
 #' print(train_result$N[1:5,1:5])
 ncs_train <- function(x_train, y_train, df = NULL, knots = NULL)
 {
+  ginv <- MASS::ginv
   # get all necessary spline properties
   if (is.null(df) & is.null(knots)) {  # neither is specified
     df <- 4  # Default 4 degrees of freedom
