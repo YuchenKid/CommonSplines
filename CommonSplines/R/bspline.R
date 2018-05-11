@@ -25,7 +25,7 @@
 #'   lines(x,basis$basismatrix[,i])
 #' }
 #' @export
-bsplineBasis <-function (x,y,order,innerknots) #degree<-order-1
+bs_basis <-function (x,y,order,innerknots) #degree<-order-1
 {
   highknot = max(x)
   lowknot = min(x)
@@ -80,7 +80,7 @@ bsplineBasis <-function (x,y,order,innerknots) #degree<-order-1
 #' plot(x_test,fit)
 #' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 #' @export
-bsplineFitting<-function (x_test,basis) #basis<-bsplineBasis(x,y,order,innerknots)
+bs_predict<-function (x_test,basis) #basis<-bsplineBasis(x,y,order,innerknots)
 {
   knots <-basis$knots
   order<-basis$order
@@ -131,25 +131,9 @@ bsplineFitting<-function (x_test,basis) #basis<-bsplineBasis(x,y,order,innerknot
 #' cat("the knots chosen are: ",basis$knots)
 #' @export
 
-CubicSmoothingSpline.Train<-function (x,y,lambda)
+css_train<-function (x,y,lambda)
 {
-  if (length(x)<=51){
-    basis<- natural_cubic_splines.train(x, y, knots=x/max(x))
-  }else{
-    knots<-seq(0,1,0.02)
-    x_knots<-numeric(51)
-    y_knots<-numeric(51)
-    x_knots[1]<-x[1]
-    y_knots[1]<-y[1]
-    x_knots[51]<-x[length(x)]
-    y_knots[51]<-y[length(y)]
-    for(i in 2:50){
-      j<-floor(knots[i]*length(x))
-      x_knots[i]<-x[j+1]
-      y_knots[i]<-y[j+1]
-    }
-    basis<- natural_cubic_splines.train(x_knots, y_knots, knots=x_knots/max(x_knots))
-  }
+  basis<- ncs_train(x, y, knots=x/max(x))
   knots<-unname(basis$knots)
   h<-numeric(length(knots)-1)
   for (i in 1:length(h)){
@@ -165,20 +149,11 @@ CubicSmoothingSpline.Train<-function (x,y,lambda)
     w[i,i-1]<-h[i]/6
     w[i,i]<-(h[i]+h[i+1])/3
   }
-  K<-t(delta)%*%solve(w)%*%delta
+  K<-t(delta)%*%ginv(w)%*%delta
   I<-diag(length(knots))
-  if((length(x)<=51)){
-    S<-solve(I+lambda*K)%*%y
-  }else{
-    S<-solve(I+lambda*K)%*%y_knots
-  }
-  beta<-solve(basis$N)%*%S
-  #f<-basis$N%*%S
-  if((length(x)<=51)){
-    solution<-list("beta"=beta,"S" = S, "knots"=x)
-  }else{
-    solution<-list("beta"=beta,"S" = S, "knots"=x_knots)
-  }
+  S<-solve(I+lambda*K)%*%y
+  beta<-ginv(basis$N)%*%S
+  solution<-list("beta"=beta,"S" = S, "knots"=x)
   return(solution)
 }
 #' Prediction using smoothing spline with squared 2nd derivative penalty
@@ -202,7 +177,7 @@ CubicSmoothingSpline.Train<-function (x,y,lambda)
 #' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 
 #' @export
-CubicSmoothingSpline.Fitting<-function (basis,x_test)
+css_predict<-function (basis,x_test)
 {
   N_test<-natural_cubic_splines.eval_basis(x_test, basis$knots, length(basis$knots))
   f<-N_test%*%basis$beta

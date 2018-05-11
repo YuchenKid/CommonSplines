@@ -83,7 +83,7 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
     knots <- place_knots(nknots, x_train)
   } else if (is.null(df)) {  # knots is specified
     nknots <- length(knots)
- #   knots <- quantile(x_train, knots, type=1)
+    knots <- quantile(x_train, knots, type=1)
   } else if (is.null(knots)) {
     nknots <- df + 1
     knots <- place_knots(nknots, x_train)
@@ -93,7 +93,7 @@ natural_cubic_splines.train <- function(x_train, y_train, df = NULL, knots = NUL
   N <- natural_cubic_splines.eval_basis(x_train, knots, nknots)
 
   # least sqaure fit
-  betas <- (solve(t(N)%*%N))%*%t(N)%*%y_train
+  betas <- (ginv(t(N)%*%N))%*%t(N)%*%y_train
 
   return(list('nknots' = nknots, 'knots' = knots,
               'N' = N, 'betas' = betas))
