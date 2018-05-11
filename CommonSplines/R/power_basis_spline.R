@@ -1,6 +1,8 @@
 #' Regression using Power Basis spline
 #'
-#' This function is a generalization of CubicPowerBasisSpline with arbitrary order
+#' This function provides regressions using Power Basis splines. The basis splines are defined as
+#' 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-k2)^(m-1)+
+#' where m is the order, k1, k2 and kn are n knots, '+' denotes the positive part.
 #' 
 #' Only univariate input can be used.
 #' 
@@ -29,8 +31,9 @@
 #' plot(t, y1, t="l")
 #' lines(t, y.hat, col=2)
 #' @export
-PowerBasisSpline <- function(x,y,x_test,order,innerknots)
+power_basis_spline <- function(x,y,x_test,order,innerknots)
 {
+  ginv <- MASS::ginv
   innerknots <- unique(sort(innerknots))
   NumX <- length(x)
   NumKnots <- length(innerknots)
