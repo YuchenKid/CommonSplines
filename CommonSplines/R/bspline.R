@@ -6,7 +6,7 @@
 #' @param x The input vector of training dataset.
 #' @param y The output vector of training dataset.
 #' @param order The order of B-spline functions. The default is order=4 for cubic B-splines.
-#' @param innerknots The internal knots that define the spline. \code{innerknots} should not contain knots on the boundary.
+#' @param knots The knots that define the spline. \code{knots} should contain knots on the boundary.
 #' @return A list with the following components:
 #' \item{beta}{ The coefficients of nonparametric regression.}
 #' \item{basis}{The B-spline basis matrix of dimension c(length(x), df). df = length(innerknots) + order.}
@@ -16,24 +16,23 @@
 #' x<-seq(0, 1, 0.001)
 #' y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 #' plot(x,y)
-#' innerknots <- seq(0.1, 0.9, 0.1)
+#' knots <- seq(0, 1, 0.1)
 #' order<-4
 #'
-#' basis<-bs_basis(x,y,order,innerknots)
+#' basis<-bs_basis(x,y,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
-#' for (i in 1: (length(innerknots)+order)){
+#' for (i in 1: (length(knots)-2+order)){
 #'   lines(x,basis$basismatrix[,i])
 #' }
 #' @export
-bs_basis <-function (x,y,order,innerknots) #degree<-order-1
+bs_basis <-function (x,y,order,knots) #degree<-order-1
 {
   highknot = max(x)
   lowknot = min(x)
-  innerknots <- unique (sort (innerknots))
-  #knots <-c(rep(lowknot, order), innerknots, rep(highknot, order))
-  knots <-c(rep(lowknot-0.0001, order-1),lowknot, innerknots,highknot, rep(highknot+0.0001, order-1))
+  knots <- unique (sort (knots))
+  j <- length (knots)-2 # j+order basis functions
+  knots <-c(rep(lowknot-0.0001, order-1), knots, rep(highknot+0.0001, order-1))
   n <- length (x)
-  j <- length (innerknots) # j+order basis functions
   G <- matrix (0,  nrow=n,ncol=(j+2*order-1)) # matrix G is n*(J+q) dimensional, used for coefficient estimation.
   for (i in 1: (j+2*order-1)){
     G[,i]<-ifelse((x>=knots[i]&x<knots[i+1]),1,0)
@@ -53,7 +52,7 @@ bs_basis <-function (x,y,order,innerknots) #degree<-order-1
     }
   }
   Gb<-G[,1:(j+order)]
-  beta<-(solve(t(Gb)%*%Gb))%*%t(Gb)%*%y
+  beta<-(MASS::ginv(t(Gb)%*%Gb))%*%t(Gb)%*%y
   solution<-list("beta"=beta ,"basismatrix" = Gb,"knots"=knots, "order"=order)
   return (solution)
 }

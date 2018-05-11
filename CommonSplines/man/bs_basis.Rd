@@ -4,7 +4,7 @@
 \alias{bs_basis}
 \title{Generating B-spline basis}
 \usage{
-bs_basis(x, y, order, innerknots)
+bs_basis(x, y, order, knots)
 }
 \arguments{
 \item{x}{The input vector of training dataset.}
@@ -13,7 +13,7 @@ bs_basis(x, y, order, innerknots)
 
 \item{order}{The order of B-spline functions. The default is order=4 for cubic B-splines.}
 
-\item{innerknots}{The internal knots that define the spline. \code{innerknots} should not contain knots on the boundary.}
+\item{knots}{The knots that define the spline. \code{knots} should contain knots on the boundary.}
 }
 \value{
 A list with the following components:
@@ -30,12 +30,12 @@ the recursive formulas due to de Boor. Only univariate input can be used.
 x<-seq(0, 1, 0.001)
 y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 plot(x,y)
-innerknots <- seq(0.1, 0.9, 0.1)
+knots <- seq(0, 1, 0.1)
 order<-4
 
-basis<-bs_basis(x,y,order,innerknots)
+basis<-bs_basis(x,y,order,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
-for (i in 1: (length(innerknots)+order)){
+for (i in 1: (length(knots)-2+order)){
   lines(x,basis$basismatrix[,i])
 }
 }

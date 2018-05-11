@@ -39,10 +39,10 @@ css_train<-function (x,y,lambda)
     w[i,i-1]<-h[i]/6
     w[i,i]<-(h[i]+h[i+1])/3
   }
-  K<-t(delta)%*%ginv(w)%*%delta
+  K<-t(delta)%*%MASS::ginv(w)%*%delta
   I<-diag(length(knots))
   S<-solve(I+lambda*K)%*%y
-  beta<-ginv(basis$N)%*%S
+  beta<-MASS::ginv(basis$N)%*%S
   solution<-list("beta"=beta,"S" = S, "knots"=x)
   return(solution)
 }

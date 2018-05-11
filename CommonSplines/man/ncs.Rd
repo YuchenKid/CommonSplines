@@ -32,6 +32,7 @@ Only univariate input can be used.
 x_train <- seq(1, 10, 0.1)
 y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
 plot(x_train,y_train)
+title('Comparison of Different Degrees of Freedom')
 x_test <- seq(1, 10, 0.1)
 lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
 
@@ -46,5 +47,4 @@ y_pred <- ncs(x_train, y_train, x_test, df)
 lines(x_test,y_pred, col='black')
 legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
 legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
-title('Smoothing Comparison of Different Degrees of Freedom')
 }
