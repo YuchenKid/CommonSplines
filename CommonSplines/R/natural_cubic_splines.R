@@ -22,6 +22,7 @@
 #' x_train <- seq(1, 10, 0.1)
 #' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
 #' plot(x_train,y_train)
+#' title('Comparison of Different Degrees of Freedom')
 #' x_test <- seq(1, 10, 0.1)
 #' lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
 #'
@@ -36,7 +37,6 @@
 #' lines(x_test,y_pred, col='black')
 #' legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
 #' legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
-#' title('Smoothing Comparison of Different Degrees of Freedom')
 ncs <- function(x_train, y_train, x_test, df = NULL, knots = NULL)
 {
   train_result <- ncs_train(x_train, y_train,
@@ -83,7 +83,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL)
     knots <- place_knots(nknots, x_train)
   } else if (is.null(df)) {  # knots is specified
     nknots <- length(knots)
- #   knots <- quantile(x_train, knots, type=1)
+    knots <- quantile(x_train, knots, type=1)
   } else if (is.null(knots)) {
     nknots <- df + 1
     knots <- place_knots(nknots, x_train)
@@ -93,7 +93,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL)
   N <- ncs_eval_basis(x_train, knots, nknots)
 
   # least sqaure fit
-  betas <- (solve(t(N)%*%N))%*%t(N)%*%y_train
+  betas <- (ginv(t(N)%*%N))%*%t(N)%*%y_train
 
   return(list('nknots' = nknots, 'knots' = knots,
               'N' = N, 'betas' = betas))
