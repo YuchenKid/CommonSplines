@@ -18,7 +18,7 @@ natural_cubic_splines() then chooses (df + 1) knots at uniform quantiles of x.
 The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.}
 
 \item{knots}{Breakpoints that define the spline.
-The default is five knots at uniform quantiles (0, 25, 50, 75, 100th).
+The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 Typical values are the mean or median for one knot, quantiles for more knots.}
 }
 \value{
