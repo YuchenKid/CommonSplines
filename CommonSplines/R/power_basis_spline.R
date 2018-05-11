@@ -1,11 +1,11 @@
 #' Regression using Power Basis spline
 #'
-#' This function provides regressions using Power Basis splines. The basis splines are defined as
-#' 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-k2)^(m-1)+
+#' This function provides regressions using Power Basis splines. The basis are defined as
+#' 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-kn)^(m-1)+
 #' where m is the order, k1, k2 and kn are n knots, '+' denotes the positive part.
-#' 
+#'
 #' Only univariate input can be used.
-#' 
+#'
 #' @param x The input vector of training dataset.
 #' @param y The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
@@ -39,7 +39,7 @@ power_basis_spline <- function(x,y,x_test,order,innerknots)
   NumKnots <- length(innerknots)
   G <- matrix(0, nrow=NumX, ncol=(NumKnots+order)) # matrix G is NumX*(NumKnots+order) dimensional, used for coefficient estimation.
   y <- matrix(y)
-  
+
   for(m in 1:NumX){
     for(n in 1:(NumKnots+order)){
       if(n <= order){
@@ -52,7 +52,7 @@ power_basis_spline <- function(x,y,x_test,order,innerknots)
     }
   }
   Beta <- (ginv(t(G)%*%G))%*%t(G)%*%y
-  
+
   NumTest <- length(x_test)
   phi <- matrix (0, nrow=NumTest, ncol=(NumKnots+order))
   for(m in 1:NumTest){
@@ -67,7 +67,7 @@ power_basis_spline <- function(x,y,x_test,order,innerknots)
     }
   }
   f <- phi%*%Beta
-  
+
   solution<-list("beta"=Beta,"basis"=G,"f"=f)
   return (solution)
 }
