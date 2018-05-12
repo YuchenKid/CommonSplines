@@ -41,17 +41,17 @@ np_reg<- function(x_train, y_train, x_test, func = 'bs',order=4,df = NULL, knots
 {
   if(func=="ncs"){
     fit <- ncs_train(x_train, y_train, df = df, knots = knots,q=q)
-    y_pred <- ncs_predict(x_test, fit$betas,fit$knots)
+    y_pred <- ncs_predict(x_test, fit$beta,fit$knots)
   }
   else if(func=="bs"){
-    fit <- bs_train(x_train, y_train, order=order,df = df, real_knots = knots,q=q)
+    fit <- bs_train(x_train, y_train, order=order,real_knots = knots,df = df, q=q)
     y_pred <- bs_predict(x_test,order=fit$order, fit$knots, fit$beta)
   } else if(func=="css"){
     fit <- css_train(x_train, y_train,lambda)
-    y_pred <- css_predict(x_test, fit$betas,fit$knots)
+    y_pred <- css_predict(x_test, fit$beta,fit$knots)
   }else if(func=="pbs"){
     fit <- pbs_train(x_train, y_train,order=order, df = df, knots = knots,q=q)
-    y_pred <- ncs_predict(x_test, order=fit$order,fit$betas,fit$knots)
+    y_pred <- pbs_predict(x_test, order=fit$order,beta=fit$beta,knots=fit$knots)
   }else{
     print("A correct regression spline/smoothing spline function needs to be specified.")
   }

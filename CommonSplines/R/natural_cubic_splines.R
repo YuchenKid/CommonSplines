@@ -49,7 +49,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 #' Prediction using regression spline with natural cubic spline.
 #'
 #' @param x_test The input values at which evaluations are required.
-#' @param basis The return value of function \code{bs_train}.
+#' @param basis The return value of function \code{ncs_train}.
 #' Instead of specify \code{knots} and \code{beta},One can supply \code{basis} directly.
 #' @param knots Breakpoints that define the spline. \code{knots} should be in terms of real-values of x
 #'  It can be the return value of \code{generate_knots}.

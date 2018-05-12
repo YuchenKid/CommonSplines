@@ -14,7 +14,7 @@ It can be the return value of \code{generate_knots}.}
 
 \item{beta}{The coefficients of nonparametric regression.}
 
-\item{basis}{The return value of function \code{bs_train}.
+\item{basis}{The return value of function \code{ncs_train}.
 Instead of specify \code{knots} and \code{beta},One can supply \code{basis} directly.}
 }
 \value{
