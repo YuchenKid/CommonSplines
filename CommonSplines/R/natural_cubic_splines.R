@@ -199,25 +199,26 @@ d_k_function <- function(x, k, knots, nknots)
 
 #' Select smoothing parameter based on leave-one-out CV error
 #'
-#' @param x predictor variable
-#' @param y response variable
-#' @param cv_lambda vector of candidate lambda values
+#' @param x predictor variable.
+#' @param y response variable.
+#' @param cv_lambda vector of candidate lambda values, must be between 0 and 1.
 #'
-#' @return lamdba value that minimizes leave-one-out CV error
+#' @return lamdba value that minimizes leave-one-out CV error.
 #' @export
 sel_smoothing_para <- function(x, y, cv_lambda) {
   cv_size = length(cv_lambda)
   cv_error <- array(0, dim=cv_size)
-  for (i in 1:cv.size) {
-    data <- smoothingSplineTrain(x, y, cv_lambda[i])
-    cv_error[i] <- cal_loo_cv_error(y, data$f_hat, data$S)
+  for (i in 1:cv_size) {
+    solution <- css_train(x, y, cv_lambda[i])
+    cv_error[i] <- cal_loo_cv_error(y, css_predict(solution, x), solution$S)
   }
 
   df <- as.data.frame(x = cv_lambda)
   df[,2] <- cv_error
-  best_lambda <- df$cv_lambda[which.min(apply(df,MARGIN=1,min))]  # get best lambda
+  best_lambda <- df$cv_lambda[which.min(apply(df$V2,MARGIN=1,min))]  # get best lambda
 
-  return(best_lambda)
+  #return(best_lambda)
+  return(df)
 }
 
 
