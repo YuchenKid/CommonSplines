@@ -43,7 +43,7 @@ y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(leng
 plot(x_train,y_train)
 title('Comparison of Different Degrees of Freedom')
 x_test <- seq(1, 10, 0.1)
-lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
+lines(x_test,cos(x_test)^3 * 3 - sin(x_test)^2 * 2 + x_test + exp(1),col="red")
 
 df <- 2
 y_pred <- np_reg(x_train, y_train, x_test,func="ncs", df=df)

@@ -17,7 +17,6 @@
 #' @seealso \code{generate_knots}.
 #' @param q A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 #' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
-#' @param
 
 #' @return
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}

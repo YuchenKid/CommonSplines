@@ -4,7 +4,8 @@ Version: 1.0.0
 Imports: MASS
 Date: 2018-05-11
 Authors: Xingchen LIU <e0225109@u.nus.edu>, Yuchen SHI <yuchenshinus@gmail.com>, Xiaozhou Yang <yang_xiaozhou@icloud.com>
-Description: This is an R package that covers commonly seem regression spline and smoothing spline. For regression spline, commonly seen basis functions are provided such as truncated power basis, natural spline basis and B-spline basis. For smoothing spline, penalties on second order derivative are provided, i.e., cubic smoothing spline. 
+URL: https://github.com/YuchenKid/CommonSplines
+Description: This is an R package that covers commonly seen nonparametric regression using spline-based methods. For regression spline, commonly seen basis functions are provided such as truncated power basis, natural cubic spline basis, and B-spline basis. For regularization, penalties on squared second-order derivative are provided, i.e., cubic smoothing spline.This package mainly refer to “Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,” Chapter 5. 
 Depends: R (>= 3.3.2)
 License: Apache License 2.0
 Encoding: UTF-8

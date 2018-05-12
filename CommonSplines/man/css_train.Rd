@@ -21,8 +21,7 @@ A list with the following components:
 }
 \description{
 This function trains a smoothing spline with squared 2nd derivative penalty. It has an explicit,finite-dimensional,
-unique minimizer which is a natural cubic spline. This function can be used for small or moderate number of knots. When the number of data N<=50, all knots are included.
-When N>50, 50 knots are uniformly chosen from the training dataset.
+unique minimizer which is a natural cubic spline.
 }
 \examples{
 x<-seq(0, 1, 0.001)
@@ -32,4 +31,8 @@ lambda<-0.001
 
 basis<-css_train(x,y,lambda)
 cat("the knots chosen are: ",basis$knots)
+}
+\references{
+"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+ Chapter 5.4.
 }
