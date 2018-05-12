@@ -30,7 +30,7 @@
 #' plot(x_train,y_train)
 #' title('Comparison of Different Degrees of Freedom')
 #' x_test <- seq(1, 10, 0.1)
-#' lines(x_test,cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1),col="red")
+#' lines(x_test,cos(x_test)^3 * 3 - sin(x_test)^2 * 2 + x_test + exp(1),col="red")
 #'
 #' df <- 2
 #' y_pred <- np_reg(x_train, y_train, x_test,func="ncs", df=df)
@@ -47,14 +47,14 @@ np_reg<- function(x_train, y_train, x_test, func = 'bs',order=4,df = NULL, knots
 {
   if(func=="ncs"){
     fit <- ncs_train(x_train, y_train, df = df, knots = knots,q=q)
-    y_pred <- ncs_predict(x_test, fit$beta,fit$knots)
+    y_pred <- ncs_predict(x_test, knots = fit$knots, beta = fit$beta)
   }
   else if(func=="bs"){
     fit <- bs_train(x_train, y_train, order=order,real_knots = knots,df = df, q=q)
-    y_pred <- bs_predict(x_test,order=fit$order, fit$knots, fit$beta)
+    y_pred <- bs_predict(x_test,order=fit$order, knots = fit$knots, beta = fit$beta)
   } else if(func=="css"){
     fit <- css_train(x_train, y_train,lambda)
-    y_pred <- css_predict(x_test, fit$beta,fit$knots)
+    y_pred <- css_predict(x_test, beta = fit$beta, knots = fit$knots)
   }else if(func=="pbs"){
     fit <- pbs_train(x_train, y_train,order=order, df = df, knots = knots,q=q)
     y_pred <- pbs_predict(x_test, order=fit$order,beta=fit$beta,knots=fit$knots)
@@ -81,8 +81,8 @@ generate_knots<-function(x_train,df=NULL,knots=NULL,q=FALSE)
 {
   # get all necessary spline properties
   if (is.null(df) & is.null(knots)) {  # neither is specified
-    df <- 4  # Default 4 degrees of freedom
-    nknots <- df + 1
+    df <- 4  # default 4 degrees of freedom
+    nknots <- df + 1  # this formula applies only to ncs
     knots <- place_knots(nknots, x_train)
   } else if (is.null(df)&q==TRUE) {  # knots is specified as quantiles of x
     nknots <- length(knots)

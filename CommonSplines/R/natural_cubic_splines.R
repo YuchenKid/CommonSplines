@@ -1,6 +1,3 @@
-
-
-
 #' Train regression coefficients for natural cubic splines.
 #'
 #' @param x_train The input vector of training dataset.
@@ -35,6 +32,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 
   generate<-generate_knots(x_train,df,knots,q)
   knots<-generate
+  print(knots)
   # evaluate basis functions and obtain basis matrix
   N <- ncs_basis(x_train, knots)
 
@@ -137,7 +135,6 @@ d_k_function <- function(x, k, knots, nknots)
 }
 
 
-<<<<<<< HEAD
 #' Select smoothing parameter based on leave-one-out CV error
 #'
 #' @param x predictor variable.
@@ -158,8 +155,8 @@ sel_smoothing_para <- function(x, y, cv_lambda) {
   df[,2] <- cv_error
   best_lambda <- df$cv_lambda[which.min(apply(df$V2,MARGIN=1,min))]  # get best lambda
 
-  #return(best_lambda)
-  return(df)
+  return(best_lambda)
+  #return(df)
 }
 
 
@@ -177,10 +174,4 @@ cal_loo_cv_error <- function(y, f_hat, S) {
 
   return(cv_error)
 }
-
-=======
->>>>>>> 9060222c72720790f58384bba007701d64c737f3
-
-
-
 
