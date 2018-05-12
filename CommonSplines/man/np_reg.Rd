@@ -5,7 +5,7 @@
 \title{Nonparametric Regression using spline based methods}
 \usage{
 np_reg(x_train, y_train, x_test, func = "bs", order = 3, df = NULL,
-  knots = NULL, lambda = 0.001)
+  knots = NULL, lambda = 0.001, q = FALSE)
 }
 \arguments{
 \item{x_train}{The input vector of training dataset.}

@@ -4,7 +4,7 @@
 \alias{ncs_train}
 \title{Train regression coefficients for natural cubic splines.}
 \usage{
-ncs_train(x_train, y_train, df = NULL, knots = NULL)
+ncs_train(x_train, y_train, df = NULL, knots = NULL, q = FALSE)
 }
 \arguments{
 \item{x_train}{The input vector of training dataset.}
@@ -15,9 +15,12 @@ ncs_train(x_train, y_train, df = NULL, knots = NULL)
 ncs() then chooses (df + 1) knots at uniform quantiles of x.
 The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.}
 
-\item{knots}{Breakpoints that define the spline, in terms of quantiles of x.
+\item{knots}{Breakpoints that define the spline, in terms of quantiles of x or real values of x.
 The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 Typical values are the mean or median for one knot, quantiles for more knots.}
+
+\item{q}{A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.}
 }
 \value{
 A list of following components:

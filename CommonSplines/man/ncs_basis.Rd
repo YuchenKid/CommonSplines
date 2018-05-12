@@ -9,10 +9,7 @@ ncs_basis(x, knots)
 \arguments{
 \item{x}{Predictor variable vector.}
 
-\item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
-spaced quantiles based on number of knots.}
-
-\item{nknots}{Number of knots useded in training.}
+\item{knots}{Knots location in terms of real values of x.}
 }
 \value{
 Basis matrix evaluated at each x value.

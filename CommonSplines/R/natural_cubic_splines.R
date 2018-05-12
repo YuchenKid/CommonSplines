@@ -8,10 +8,11 @@
 #' @param df Degrees of freedom. One can supply df rather than knots;
 #' ncs() then chooses (df + 1) knots at uniform quantiles of x.
 #' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
-#' @param knots Breakpoints that define the spline, in terms of quantiles of x.
+#' @param knots Breakpoints that define the spline, in terms of quantiles of x or real values of x.
 #' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 #' Typical values are the mean or median for one knot, quantiles for more knots.
-#'
+#' @param q A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+#' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
 #' @return A list of following components:
 #' \item{nknots}{Number of knots.}
 #' \item{knots}{A vector of knot locations.}
@@ -28,11 +29,11 @@
 #' train_result <- ncs_train(x_train, y_train, df)
 #' print(train_result$betas)
 #' print(train_result$N[1:5,1:5])
-ncs_train <- function(x_train, y_train, df = NULL, knots = NULL)
+ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 {
   ginv <- MASS::ginv
 
-  knots<-generate_knots<-function(x_train,df,knots)
+  knots<-generate_knots<-function(x_train,df,knots,q)
 
   # evaluate basis functions and obtain basis matrix
   N <- ncs_basis(x_train, knots)
@@ -66,8 +67,7 @@ ncs_predict <- function(x_test, beta, knots)
 #' Generate an evaluated basis matrix for natural cubic splines
 #'
 #' @param x Predictor variable vector.
-#' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots.
+#' @param knots Knots location in terms of real values of x.
 #'
 #' @return Basis matrix evaluated at each x value.
 #' @examples

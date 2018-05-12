@@ -4,7 +4,7 @@
 \alias{pbs_train}
 \title{Regression using Power Basis spline}
 \usage{
-pbs_train(x, y, order, knots)
+pbs_train(x, y, order, df = NULL, knots = NULL, q = FALSE)
 }
 \arguments{
 \item{x}{The input vector of training dataset.}
@@ -13,7 +13,14 @@ pbs_train(x, y, order, knots)
 
 \item{order}{The order that defines the spline.}
 
-\item{knots}{The internal knots that define the spline.}
+\item{df}{Degrees of freedom. One can supply df rather than knots.}
+
+\item{knots}{The innerknots and boundary knots that define the spline.
+The knots provided can be quantiles of x or real values.
+More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.}
+
+\item{q}{A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.}
 
 \item{x_test}{The input values at which evaluations are required.}
 }
@@ -21,7 +28,8 @@ pbs_train(x, y, order, knots)
 A list with the following components:
 \item{beta}{ The coefficients of nonparametric regression.}
 \item{basis}{The spline basis matrix of dimension c(length(x), length(knots)+order)}
-\item{f}{The evaluated output at x_test.}
+\item{knots}{The knots used to construct the power basis splines}
+\item{order}{The order of basis functions. order=degree+1}
 }
 \description{
 This function provides regressions using Power Basis splines. The basis are defined as
@@ -42,9 +50,9 @@ set.seed(1)
 y1 <- a*sin(b*t)+c.unif*amp # uniform error
 knots <- c(min(t),2*pi*c(1/4,2/4,3/4),max(t))
 order <- 4
-basis <- pbs_train(t,y1,order,knots)
-fit<-pbs_predict(t,basis=basis)
-y.hat <- fit
-plot(t, y1, t="l")
-lines(t, y.hat, col=2)
+basis <- pbs_train(t,y1,order,knots=knots)
+cat("trained coeffecients for every spline are",basis$beta)
+}
+\seealso{
+\code{generate_knots}.
 }
