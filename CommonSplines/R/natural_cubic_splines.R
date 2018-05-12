@@ -86,7 +86,7 @@ ncs_predict <- function(x_test,knots=NULL,beta=NULL,basis=NULL)
 #' basis<-ncs_basis(x,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 #' for (i in 1: (length(knots))){
-#'   lines(x,basis[,i])
+#'   lines(x,basis[,i],col=i)
 #' }
 #' @export
 ncs_basis <- function(x, knots)
