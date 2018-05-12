@@ -13,7 +13,7 @@
 #' basis<-pbs_basis(x,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 #' for (i in 1: (length(knots)+order)){
-#'   lines(x,basis[,i])
+#'   lines(x,basis[,i],col=i)
 #' }
 #' @return Basis matrix evaluated at each x value.
 pbs_basis <- function(x,order,knots)

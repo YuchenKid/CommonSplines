@@ -38,7 +38,7 @@ bs_knots<-function(x,df=NULL,real_knots=NULL,q=FALSE,order)
 #' basis<-bs_basis(x,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 #' for (i in 1: (length(knots)-order)){
-#'   lines(x,basis[,i])
+#'   lines(x,basis[,i],col=i)
 #' }
 #' @export
 bs_basis <-function (x,order,knots)
@@ -95,7 +95,7 @@ bs_basis <-function (x,order,knots)
 #' basis<-bs_train(x,y,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 #' for (i in 1: (length(knots)+order)){
-#'   lines(x,basis$basismatrix[,i])
+#'   lines(x,basis$basismatrix[,i],col=i)
 #' }
 #' @export
 bs_train <-function (x,y,order,real_knots=NULL,df = NULL,q=FALSE) #degree<-order-1
