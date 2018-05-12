@@ -42,7 +42,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
   betas <- (ginv(t(N)%*%N))%*%t(N)%*%y_train
 
   return(list('knots' = knots,
-              'N' = N, 'betas' = betas,'nknots'=length(knots)))
+              'N' = N, 'beta' = betas,'nknots'=length(knots)))
 }
 
 
@@ -60,8 +60,17 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 #' @export
 ncs_predict <- function(x_test,knots=NULL,beta=NULL,basis=NULL)
 {
-  N_test = ncs_basis(x_test, knots)
-  y_pred = N_test %*% beta
+  if(is.null(basis)==0) #basis is not null
+  {
+    knots<-basis$knots
+    beta<-basis$beta
+  }
+  if(is.null(basis)&(is.null(knots)|is.null(beta))) #basis is null and some parameters are null
+  {
+    print("some necessary parameters (knots/beta) are missing!")
+  }
+  N_test <- ncs_basis(x_test, knots)
+  y_pred <- N_test %*% beta
 
   return(y_pred)
 }

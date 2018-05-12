@@ -29,7 +29,7 @@ knots<-bs_knots(x,real_knots=knots,order=order)
 
 basis<-bs_basis(x,order,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
-for (i in 1: (length(knots)+order)){
+for (i in 1: (length(knots)-order)){
   lines(x,basis[,i])
 }
 }

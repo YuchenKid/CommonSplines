@@ -10,7 +10,7 @@
 #' @param order The order of basis functions. order=degree+1
 #' @return The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots.
 #' @export
-bs_knots<-function(x,df=NULL,real_knots=NULL,q=NULL,order)
+bs_knots<-function(x,df=NULL,real_knots=NULL,q=FALSE,order)
 {
   knots<-generate_knots(x,df,real_knots,q)
   highknot = max(x)
@@ -37,7 +37,7 @@ bs_knots<-function(x,df=NULL,real_knots=NULL,q=NULL,order)
 #'
 #' basis<-bs_basis(x,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
-#' for (i in 1: (length(knots)+order)){
+#' for (i in 1: (length(knots)-order)){
 #'   lines(x,basis[,i])
 #' }
 #' @export
