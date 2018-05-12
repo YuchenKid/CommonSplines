@@ -43,9 +43,13 @@ order<-4
 basis<-bs_train(x,y,order,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 for (i in 1: (length(knots)+order)){
-  lines(x,basis$basismatrix[,i])
+  lines(x,basis$basismatrix[,i],col=i)
 }
+}
+\references{
+"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Chapter 5, Appendix.
 }
 \seealso{
-\code{generate_knots}, \code{bs_knots}.
+\code{bs_knots}.
 }

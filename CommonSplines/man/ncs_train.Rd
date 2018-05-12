@@ -30,7 +30,8 @@ A list of following components:
 \item{betas}{Least sqaure fit parameters.}
 }
 \description{
-Train regression coefficients for natural cubic splines.
+During the least square fitting of nonparametric
+regression coefficients,Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
 }
 \examples{
 x_train <- seq(1, 10, 0.1)
@@ -41,4 +42,10 @@ df <- 10
 train_result <- ncs_train(x_train, y_train, df)
 print(train_result$betas)
 print(train_result$N[1:5,1:5])
+}
+\references{
+"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Chapter 5.2.1.
+
+Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
 }

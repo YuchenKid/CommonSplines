@@ -16,7 +16,7 @@ pbs_train(x, y, order, df = NULL, knots = NULL, q = FALSE)
 \item{df}{Degrees of freedom. One can supply df rather than knots.}
 
 \item{knots}{The innerknots and boundary knots that define the spline.
-The knots provided can be quantiles of x or real values.
+The knots provided can be quantiles of x or real values of x.
 More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.}
 
 \item{q}{A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
@@ -35,8 +35,6 @@ A list with the following components:
 This function provides regressions using Power Basis splines. The basis are defined as
 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-kn)^(m-1)+
 where m is the order, k1, k2 and kn are n knots, '+' denotes the positive part.
-}
-\details{
 Only univariate input can be used.
 }
 \examples{
@@ -52,6 +50,10 @@ knots <- c(min(t),2*pi*c(1/4,2/4,3/4),max(t))
 order <- 4
 basis <- pbs_train(t,y1,order,knots=knots)
 cat("trained coeffecients for every spline are",basis$beta)
+}
+\references{
+"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Chapter 5.2.1.
 }
 \seealso{
 \code{generate_knots}.

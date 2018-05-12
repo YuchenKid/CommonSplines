@@ -57,6 +57,10 @@ lines(x_test,y_pred, col='black')
 legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
 legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
 }
+\references{
+"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Chapter 5.
+}
 \seealso{
 \code{generate_knots}.
 }

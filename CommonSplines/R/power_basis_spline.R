@@ -16,6 +16,7 @@
 #'   lines(x,basis[,i],col=i)
 #' }
 #' @return Basis matrix evaluated at each x value.
+
 pbs_basis <- function(x,order,knots)
 {
   phi <- matrix (0, nrow=length(x), ncol=(length(knots)+order))
@@ -38,7 +39,6 @@ pbs_basis <- function(x,order,knots)
 #' This function provides regressions using Power Basis splines. The basis are defined as
 #' 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-kn)^(m-1)+
 #' where m is the order, k1, k2 and kn are n knots, '+' denotes the positive part.
-#'
 #' Only univariate input can be used.
 #'
 #' @param x The input vector of training dataset.
@@ -46,7 +46,7 @@ pbs_basis <- function(x,order,knots)
 #' @param x_test The input values at which evaluations are required.
 #' @param order The order that defines the spline.
 #' @param knots The innerknots and boundary knots that define the spline.
-#' The knots provided can be quantiles of x or real values.
+#' The knots provided can be quantiles of x or real values of x.
 #' More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.
 #' @param df Degrees of freedom. One can supply df rather than knots.
 #' @seealso \code{generate_knots}.
@@ -57,7 +57,8 @@ pbs_basis <- function(x,order,knots)
 #' \item{basis}{The spline basis matrix of dimension c(length(x), length(knots)+order)}
 #' \item{knots}{The knots used to construct the power basis splines}
 #' \item{order}{The order of basis functions. order=degree+1}
-
+#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' Chapter 5.2.1.
 #' @examples
 #' n <- 100
 #' t <- seq(0,2*pi,length.out = 100)

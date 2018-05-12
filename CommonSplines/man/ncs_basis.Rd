@@ -24,6 +24,6 @@ knots <- seq(0, 1, 0.1)
 basis<-ncs_basis(x,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 for (i in 1: (length(knots))){
-  lines(x,basis[,i])
+  lines(x,basis[,i],col=i)
 }
 }

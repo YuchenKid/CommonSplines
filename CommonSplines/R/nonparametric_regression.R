@@ -22,7 +22,8 @@
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #'
 #' @export
-#'
+#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' Chapter 5.
 #' @examples
 #' x_train <- seq(1, 10, 0.1)
 #' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)

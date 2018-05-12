@@ -30,6 +30,9 @@ knots<-bs_knots(x,real_knots=knots,order=order)
 basis<-bs_basis(x,order,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
 for (i in 1: (length(knots)-order)){
-  lines(x,basis[,i])
+  lines(x,basis[,i],col=i)
 }
+}
+\references{
+De Boor, C., De Boor, C., Mathématicien, E. U., De Boor, C., & De Boor, C. (1978). A practical guide to splines (Vol. 27, p. 325). New York: Springer-Verlag.
 }

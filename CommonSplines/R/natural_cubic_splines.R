@@ -1,5 +1,7 @@
 #' Train regression coefficients for natural cubic splines.
 #'
+#' During the least square fitting of nonparametric
+#' regression coefficients,Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param df Degrees of freedom. One can supply df rather than knots;
@@ -16,7 +18,11 @@
 #' \item{N}{Basis matrix evaluated at each x value.}
 #' \item{betas}{Least sqaure fit parameters.}
 #' @export
+#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' Chapter 5.2.1.
 #'
+#' Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
+
 #' @examples
 #' x_train <- seq(1, 10, 0.1)
 #' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)

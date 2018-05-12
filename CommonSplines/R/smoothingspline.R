@@ -1,6 +1,7 @@
 #' Train a smoothing spline with squared 2nd derivative penalty using natural cubic spline
 #'
-#' This function trains a smoothing spline with squared 2nd derivative penalty. It has an explicit,finite-dimensional,
+#' This function trains a smoothing spline with squared 2nd derivative penalty.
+#' It has an explicit,finite-dimensional,
 #' unique minimizer which is a natural cubic spline.
 #'
 #' @param x The input vector of training dataset.
@@ -12,6 +13,7 @@
 #' \item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
 #' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
 #'  Chapter 5.4.
+#'
 #' @examples
 #' x<-seq(0, 1, 0.001)
 #' y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)

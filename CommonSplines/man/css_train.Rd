@@ -20,7 +20,8 @@ A list with the following components:
 \item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
 }
 \description{
-This function trains a smoothing spline with squared 2nd derivative penalty. It has an explicit,finite-dimensional,
+This function trains a smoothing spline with squared 2nd derivative penalty.
+It has an explicit,finite-dimensional,
 unique minimizer which is a natural cubic spline.
 }
 \examples{
