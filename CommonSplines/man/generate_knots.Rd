@@ -4,7 +4,7 @@
 \alias{generate_knots}
 \title{Generate knots when real value is not specified.}
 \usage{
-generate_knots(x_train, df, knots, q)
+generate_knots(x_train, df = NULL, knots = NULL, q = FALSE)
 }
 \arguments{
 \item{x_train}{The input vector of training dataset.}

@@ -37,15 +37,15 @@
 #' lines(x_test,y_pred, col='black')
 #' legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 df")
 #' legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
-np_reg<- function(x_train, y_train, x_test, func = 'bs',order=3,df = NULL, knots = NULL,lambda=0.001,q=FALSE)
+np_reg<- function(x_train, y_train, x_test, func = 'bs',order=4,df = NULL, knots = NULL,lambda=0.001,q=FALSE)
 {
   if(func=="ncs"){
     fit <- ncs_train(x_train, y_train, df = df, knots = knots,q=q)
     y_pred <- ncs_predict(x_test, fit$betas,fit$knots)
   }
   else if(func=="bs"){
-    fit <- bs_train(x_train, y_train, real_knots = knots,q=q)
-    y_pred <- ncs_predict(x_test,order=fit$order, fit$knots, fit$betas)
+    fit <- bs_train(x_train, y_train, order=order,df = df, real_knots = knots,q=q)
+    y_pred <- bs_predict(x_test,order=fit$order, fit$knots, fit$beta)
   } else if(func=="css"){
     fit <- css_train(x_train, y_train,lambda)
     y_pred <- css_predict(x_test, fit$betas,fit$knots)
@@ -71,7 +71,7 @@ np_reg<- function(x_train, y_train, x_test, func = 'bs',order=3,df = NULL, knots
 
 #' @return A vector of knots in terms of real values of x.
 #' @export
-generate_knots<-function(x_train,df,knots,q)
+generate_knots<-function(x_train,df=NULL,knots=NULL,q=FALSE)
 {
   # get all necessary spline properties
   if (is.null(df) & is.null(knots)) {  # neither is specified

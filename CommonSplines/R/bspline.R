@@ -10,7 +10,7 @@
 #' @param order The order of basis functions. order=degree+1
 #' @return The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots.
 #' @export
-bs_knots<-function(x,df,real_knots,q)
+bs_knots<-function(x,df=NULL,real_knots=NULL,q=NULL,order)
 {
   knots<-generate_knots(x,df,real_knots,q)
   highknot = max(x)
@@ -33,7 +33,7 @@ bs_knots<-function(x,df,real_knots,q)
 #' x<-seq(0, 1, 0.001)
 #' knots <- seq(0, 1, 0.1)
 #' order<-4
-#' knots<-bs_knots(x,real_knots=knots)
+#' knots<-bs_knots(x,real_knots=knots,order=order)
 #'
 #' basis<-bs_basis(x,order,knots)
 #' plot(x,rep(0,length(x)),type="l",ylim=c(0,1))
@@ -100,7 +100,7 @@ bs_basis <-function (x,order,knots)
 #' @export
 bs_train <-function (x,y,order,real_knots=NULL,df = NULL,q=FALSE) #degree<-order-1
 {
-  knots<-bs_knots(x,df,real_knots,q)
+  knots<-bs_knots(x=x,df=df,real_knots=real_knots,q=q,order=order)
   G<-bs_basis(x,order,knots)
   beta<-(MASS::ginv(t(G)%*%G))%*%t(G)%*%y
   solution<-list("beta"=beta ,"basismatrix" = G,"knots"=knots, "order"=order)

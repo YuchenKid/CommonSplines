@@ -25,7 +25,7 @@ the recursive formulas due to de Boor. Only univariate input can be used.
 x<-seq(0, 1, 0.001)
 knots <- seq(0, 1, 0.1)
 order<-4
-knots<-bs_knots(x,real_knots=knots)
+knots<-bs_knots(x,real_knots=knots,order=order)
 
 basis<-bs_basis(x,order,knots)
 plot(x,rep(0,length(x)),type="l",ylim=c(0,1))

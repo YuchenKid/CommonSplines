@@ -4,7 +4,7 @@
 \alias{bs_knots}
 \title{Add phantom knots for B-splines}
 \usage{
-bs_knots(x, df, real_knots, q)
+bs_knots(x, df = NULL, real_knots = NULL, q = NULL, order)
 }
 \arguments{
 \item{x}{Predictor variable vector.}

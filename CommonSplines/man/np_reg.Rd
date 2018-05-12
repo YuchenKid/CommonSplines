@@ -4,7 +4,7 @@
 \alias{np_reg}
 \title{Nonparametric Regression using spline based methods}
 \usage{
-np_reg(x_train, y_train, x_test, func = "bs", order = 3, df = NULL,
+np_reg(x_train, y_train, x_test, func = "bs", order = 4, df = NULL,
   knots = NULL, lambda = 0.001, q = FALSE)
 }
 \arguments{

@@ -33,8 +33,8 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 {
   ginv <- MASS::ginv
 
-  knots<-generate_knots<-function(x_train,df,knots,q)
-
+  generate<-generate_knots(x_train,df,knots,q)
+  knots<-generate
   # evaluate basis functions and obtain basis matrix
   N <- ncs_basis(x_train, knots)
 
@@ -49,14 +49,16 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 #' Prediction using regression spline with natural cubic spline.
 #'
 #' @param x_test The input values at which evaluations are required.
-#' @param betas Least square fit parameters obtained from training.
-#' @param knots Knots location in terms of quantiles of x_train, optional, default will be evenly
-#' spaced quantiles based on number of knots.
+#' @param basis The return value of function \code{bs_train}.
+#' Instead of specify \code{knots} and \code{beta},One can supply \code{basis} directly.
+#' @param knots Breakpoints that define the spline. \code{knots} should be in terms of real-values of x
+#'  It can be the return value of \code{generate_knots}.
+#' @param beta The coefficients of nonparametric regression.
 #'
 #' @return
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #' @export
-ncs_predict <- function(x_test, beta, knots)
+ncs_predict <- function(x_test,knots=NULL,beta=NULL,basis=NULL)
 {
   N_test = ncs_basis(x_test, knots)
   y_pred = N_test %*% beta
