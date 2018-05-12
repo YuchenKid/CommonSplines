@@ -1,18 +1,24 @@
 #' Nonparametric Regression using spline based methods
 #'
-#' This function provides regression using natural cubic splines with truncated power basis functions.
+#' This function provides regression using spline based methods. It finish both training procedure and predicting procedure.
 #' Only univariate input can be used.
 #'
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
-#' @param df Degrees of freedom. One can supply df rather than knots;
-#' (df + 1) knots are chosen at uniform quantiles of x.
-#' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
-#' @param knots Breakpoints that define the spline.
-#' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
-#' Typical values are the mean or median for one knot, quantiles for more knots.
-#'
+#' @param func The name of regression functions. It can be "pbs" for power basis spline,
+#' "ncs" for natural cubic spline, "css" for cubic smoothing spline, "bs" for B-spline. Default is "bs".
+#' @param lambda The smoothing parameter for css. Default is 0.001.
+#' @param order The order that defines the spline. Default is 4.
+#' @param knots The innerknots and boundary knots that define the spline.
+#' The knots provided can be quantiles of x or real values.
+#' More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.
+#' @param df Degrees of freedom. One can supply df rather than knots.
+#' @seealso \code{generate_knots}.
+#' @param q A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+#' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
+#' @param
+
 #' @return
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 #'
