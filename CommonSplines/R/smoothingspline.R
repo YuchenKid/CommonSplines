@@ -39,10 +39,10 @@ css_train<-function (x,y,lambda)
     w[i,i-1]<-h[i]/6
     w[i,i]<-(h[i]+h[i+1])/3
   }
-  K<-t(delta)%*%ginv(w)%*%delta
+  K<-t(delta)%*%MASS::ginv(w)%*%delta
   I<-diag(length(knots))
   S<-solve(I+lambda*K)%*%y
-  beta<-ginv(basis$N)%*%S
+  beta<-MASS::ginv(basis$N)%*%S
   solution<-list("beta"=beta,"S" = S, "knots"=x)
   return(solution)
 }
@@ -51,7 +51,12 @@ css_train<-function (x,y,lambda)
 #' This function takes the coefficients trained by \code{CubicSmoothingSpline.Train} and evaluate the output at x_test
 #'
 #' @param x_test The input values at which evaluations are required.
-#' @param basis The return value of function \code{CubicSmoothingSpline.Train}.
+#' @param basis The return value of function \code{css_train}.
+#' Instead of specify \code{knots} and \code{beta},One can supply \code{basis} directly.
+#' @param knots Breakpoints that define the spline. \code{knots} should be in terms of real-values of x
+#'  It can be the return value of \code{generate_knots}.
+#' @param beta The coefficients of nonparametric regression.
+#'
 #' @return The evaluated output at x_test.
 #' @examples
 #' x<-seq(0, 1, 0.0015)
@@ -61,15 +66,24 @@ css_train<-function (x,y,lambda)
 #' basis<-css_train(x,y,lambda)
 #'
 #' x_test<-seq(0, 1, 0.1)
-#' fit<-css_predict(basis,x_test)
+#' fit<-css_predict(x_test=x_test,basis=basis)
 #'
 #' plot(x_test,fit)
 #' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 
 #' @export
-css_predict<-function (basis,x_test)
+css_predict<-function (x_test,knots=NULL,beta=NULL,basis=NULL)
 {
-  N_test<-ncs_eval_basis(x_test, basis$knots, length(basis$knots))
-  f<-N_test%*%basis$beta
+  if(is.null(basis)==0) #basis is not null
+  {
+    knots<-basis$knots
+    beta<-basis$beta
+  }
+  if(is.null(basis)&(is.null(knots)|is.null(beta))) #basis is null and some parameters are null
+  {
+    print("some necessary parameters (knots/beta) are missing!")
+  }
+  N_test<-ncs_basis(x_test, knots)
+  f<-N_test%*%beta
   return (f)
 }
