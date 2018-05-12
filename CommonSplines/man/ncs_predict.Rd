@@ -2,23 +2,21 @@
 % Please edit documentation in R/natural_cubic_splines.R
 \name{ncs_predict}
 \alias{ncs_predict}
-\title{Prediction based on trained regression model}
+\title{Prediction using regression spline with natural cubic spline.}
 \usage{
-ncs_predict(x_test, betas, knots, nknots)
+ncs_predict(x_test, beta, knots)
 }
 \arguments{
 \item{x_test}{The input values at which evaluations are required.}
 
-\item{betas}{Least sqaure fit parameters obtained from training.}
-
 \item{knots}{Knots location in terms of quantiles of x_train, optional, default will be evenly
 spaced quantiles based on number of knots.}
 
-\item{nknots}{Number of knots used in training.}
+\item{betas}{Least square fit parameters obtained from training.}
 }
 \value{
 \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 }
 \description{
-Prediction based on trained regression model
+Prediction using regression spline with natural cubic spline.
 }

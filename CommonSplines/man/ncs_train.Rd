@@ -2,7 +2,7 @@
 % Please edit documentation in R/natural_cubic_splines.R
 \name{ncs_train}
 \alias{ncs_train}
-\title{Generate an evaluated basis matrix for natural cubic splines}
+\title{Train regression coefficients for natural cubic splines.}
 \usage{
 ncs_train(x_train, y_train, df = NULL, knots = NULL)
 }
@@ -27,7 +27,7 @@ A list of following components:
 \item{betas}{Least sqaure fit parameters.}
 }
 \description{
-Generate an evaluated basis matrix for natural cubic splines
+Train regression coefficients for natural cubic splines.
 }
 \examples{
 x_train <- seq(1, 10, 0.1)
