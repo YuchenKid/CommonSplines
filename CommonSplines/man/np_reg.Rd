@@ -2,7 +2,7 @@
 % Please edit documentation in R/nonparametric_regression.R
 \name{np_reg}
 \alias{np_reg}
-\title{Nonparametric Regression using spline based methods}
+\title{Nonparametric regression using spline-based methods}
 \usage{
 np_reg(x_train, y_train, x_test, func = "bs", order = 4, df = NULL,
   knots = NULL, lambda = 0.001, q = FALSE)
@@ -14,10 +14,10 @@ np_reg(x_train, y_train, x_test, func = "bs", order = 4, df = NULL,
 
 \item{x_test}{The input values at which evaluations are required.}
 
-\item{func}{The name of regression functions. It can be "pbs" for power basis spline,
-"ncs" for natural cubic spline, "css" for cubic smoothing spline, "bs" for B-spline. Default is "bs".}
+\item{func}{The name of regression functions. It can be "pbs" for power basis splines,
+"ncs" for natural cubic splines, "css" for cubic smoothing splines, "bs" for B-splines. Default is "bs".}
 
-\item{order}{The order that defines the spline. Default is 4.}
+\item{order}{The order that defines the spline. Default is 4 of a cubic order.}
 
 \item{df}{Degrees of freedom. One can supply df rather than knots.}
 
@@ -27,14 +27,14 @@ More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{gener
 
 \item{lambda}{The smoothing parameter for css. Default is 0.001.}
 
-\item{q}{A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+\item{q}{A boolean variable indicating whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.}
 }
 \value{
-\item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
+\item{y_pred}{A vector of dimension \code{length(x)}, the prediction vector evaluated at x_test values.}
 }
 \description{
-This function provides regression using spline based methods. It finish both training procedure and predicting procedure.
+This function provides regression using spline-based methods. It finishes both the training and predicting procedure.
 Only univariate input can be used.
 }
 \examples{
@@ -58,7 +58,7 @@ legends <- c("Actual", "Prediction: 2 df", "Prediction: 4 df", "Prediction: 10 d
 legend('topleft', legend=legends, col=c('red', 'blue', 'green', 'black'), lty=1, cex=0.8)
 }
 \references{
-"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 Chapter 5.
 }
 \seealso{

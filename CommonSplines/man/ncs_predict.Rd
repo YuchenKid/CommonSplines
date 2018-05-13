@@ -2,7 +2,7 @@
 % Please edit documentation in R/natural_cubic_splines.R
 \name{ncs_predict}
 \alias{ncs_predict}
-\title{Prediction using regression spline with natural cubic spline.}
+\title{Prediction using regression by natural cubic splines.}
 \usage{
 ncs_predict(x_test, knots = NULL, beta = NULL, basis = NULL)
 }
@@ -21,5 +21,5 @@ Instead of specify \code{knots} and \code{beta},One can supply \code{basis} dire
 \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
 }
 \description{
-Prediction using regression spline with natural cubic spline.
+Prediction using regression by natural cubic splines.
 }

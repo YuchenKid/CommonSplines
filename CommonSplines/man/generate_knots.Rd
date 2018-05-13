@@ -2,7 +2,7 @@
 % Please edit documentation in R/nonparametric_regression.R
 \name{generate_knots}
 \alias{generate_knots}
-\title{Generate knots when real value is not specified.}
+\title{Generate knots when real values are not specified.}
 \usage{
 generate_knots(x_train, df = NULL, knots = NULL, q = FALSE)
 }
@@ -24,5 +24,5 @@ provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real
 A vector of knots in terms of real values of x.
 }
 \description{
-Generate knots when real value is not specified.
+Generate knots when real values are not specified.
 }
