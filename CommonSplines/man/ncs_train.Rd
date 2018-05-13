@@ -40,7 +40,7 @@ plot(x_train,y_train)
 x_test <- seq(1, 10, 0.1)
 df <- 10
 train_result <- ncs_train(x_train, y_train, df)
-print(train_result$betas)
+print(train_result$beta)
 print(train_result$N[1:5,1:5])
 }
 \references{

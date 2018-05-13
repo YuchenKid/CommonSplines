@@ -23,7 +23,7 @@
 #' Chapter 5.2.1.
 #'
 #' Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
-
+#'
 #' @examples
 #' x_train <- seq(1, 10, 0.1)
 #' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
@@ -31,13 +31,13 @@
 #' x_test <- seq(1, 10, 0.1)
 #' df <- 10
 #' train_result <- ncs_train(x_train, y_train, df)
-#' print(train_result$betas)
+#' print(train_result$beta)
 #' print(train_result$N[1:5,1:5])
 ncs_train <- function(x_train, y_train, df = NULL, knots = NULL, q = FALSE)
 {
   ginv <- MASS::ginv
 
-  knots <- generate_knots(x_train,df,knots,q)
+  knots <- generate_knots(x_train = x_train, df = df, knots = knots, q = q)
 
   # evaluate basis functions and obtain basis matrix
   N <- ncs_basis(x_train, knots)
