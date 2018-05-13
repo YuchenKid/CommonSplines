@@ -12,14 +12,14 @@ ncs_train(x_train, y_train, df = NULL, knots = NULL, q = FALSE)
 \item{y_train}{The output vector of training dataset.}
 
 \item{df}{Degrees of freedom. One can supply df rather than knots;
-ncs() then chooses (df + 1) knots at uniform quantiles of x.
+\code{ncs_train} then chooses (df + 1) knots at uniform quantiles of x.
 The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.}
 
 \item{knots}{Breakpoints that define the spline, in terms of quantiles of x or real values of x.
 The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 Typical values are the mean or median for one knot, quantiles for more knots.}
 
-\item{q}{A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+\item{q}{A boolean variable indicating whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.}
 }
 \value{
@@ -30,8 +30,8 @@ A list of following components:
 \item{betas}{Least sqaure fit parameters.}
 }
 \description{
-During the least square fitting of nonparametric
-regression coefficients,Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
+In the least square fitting of nonparametric egression coefficients,
+Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
 }
 \examples{
 x_train <- seq(1, 10, 0.1)
@@ -44,7 +44,7 @@ print(train_result$betas)
 print(train_result$N[1:5,1:5])
 }
 \references{
-"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 Chapter 5.2.1.
 
 Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.

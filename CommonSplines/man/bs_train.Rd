@@ -47,7 +47,7 @@ for (i in 1: (length(knots)+order)){
 }
 }
 \references{
-"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 Chapter 5, Appendix.
 }
 \seealso{

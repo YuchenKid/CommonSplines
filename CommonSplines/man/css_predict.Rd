@@ -2,7 +2,7 @@
 % Please edit documentation in R/smoothingspline.R
 \name{css_predict}
 \alias{css_predict}
-\title{Prediction using smoothing spline with squared 2nd derivative penalty}
+\title{Prediction using smoothing splines with squared 2nd derivative penalty}
 \usage{
 css_predict(x_test, knots = NULL, beta = NULL, basis = NULL)
 }
@@ -21,7 +21,7 @@ Instead of specify \code{knots} and \code{beta},One can supply \code{basis} dire
 The evaluated output at x_test.
 }
 \description{
-This function takes the coefficients trained by \code{CubicSmoothingSpline.Train} and evaluate the output at x_test
+This function takes the coefficients trained by \code{css_train} and evaluates the output at x_test
 }
 \examples{
 x<-seq(0, 1, 0.0015)

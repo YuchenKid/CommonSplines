@@ -52,7 +52,7 @@ basis <- pbs_train(t,y1,order,knots=knots)
 cat("trained coeffecients for every spline are",basis$beta)
 }
 \references{
-"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 Chapter 5.2.1.
 }
 \seealso{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/smoothingspline.R
 \name{css_train}
 \alias{css_train}
-\title{Train a smoothing spline with squared 2nd derivative penalty using natural cubic spline}
+\title{Train a smoothing spline with squared 2nd derivative penalty using natural cubic splines}
 \usage{
 css_train(x, y, lambda)
 }
@@ -21,7 +21,7 @@ A list with the following components:
 }
 \description{
 This function trains a smoothing spline with squared 2nd derivative penalty.
-It has an explicit,finite-dimensional,
+It has an explicit, finite-dimensional, 
 unique minimizer which is a natural cubic spline.
 }
 \examples{
@@ -34,6 +34,6 @@ basis<-css_train(x,y,lambda)
 cat("the knots chosen are: ",basis$knots)
 }
 \references{
-"Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
  Chapter 5.4.
 }

@@ -1,16 +1,17 @@
 #' Train regression coefficients for natural cubic splines.
 #'
-#' During the least square fitting of nonparametric
-#' regression coefficients,Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
+#' In the least square fitting of nonparametric egression coefficients,
+#' Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
+#'
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param df Degrees of freedom. One can supply df rather than knots;
-#' ncs() then chooses (df + 1) knots at uniform quantiles of x.
+#' \code{ncs_train} then chooses (df + 1) knots at uniform quantiles of x.
 #' The default, df = 4, sets 5 knots with 3 inner knots at uniform quantiles of x.
 #' @param knots Breakpoints that define the spline, in terms of quantiles of x or real values of x.
 #' The default is five knots at uniform quantiles c(0, .25, .5, .75, 1).
 #' Typical values are the mean or median for one knot, quantiles for more knots.
-#' @param q A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+#' @param q A boolean variable indicating whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 #' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
 #' @return A list of following components:
 #' \item{nknots}{Number of knots.}
@@ -18,7 +19,7 @@
 #' \item{N}{Basis matrix evaluated at each x value.}
 #' \item{betas}{Least sqaure fit parameters.}
 #' @export
-#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' @references Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 #' Chapter 5.2.1.
 #'
 #' Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
@@ -32,13 +33,12 @@
 #' train_result <- ncs_train(x_train, y_train, df)
 #' print(train_result$betas)
 #' print(train_result$N[1:5,1:5])
-ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
+ncs_train <- function(x_train, y_train, df = NULL, knots = NULL, q = FALSE)
 {
   ginv <- MASS::ginv
 
-  generate<-generate_knots(x_train,df,knots,q)
-  knots<-generate
-  print(knots)
+  knots <- generate_knots(x_train,df,knots,q)
+
   # evaluate basis functions and obtain basis matrix
   N <- ncs_basis(x_train, knots)
 
@@ -50,7 +50,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 }
 
 
-#' Prediction using regression spline with natural cubic spline.
+#' Prediction using regression by natural cubic splines.
 #'
 #' @param x_test The input values at which evaluations are required.
 #' @param basis The return value of function \code{ncs_train}.
@@ -64,15 +64,16 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL,q=FALSE)
 #' @export
 ncs_predict <- function(x_test,knots=NULL,beta=NULL,basis=NULL)
 {
-  if(is.null(basis)==0) #basis is not null
+  if (!is.null(basis)) #basis is not null
   {
-    knots<-basis$knots
-    beta<-basis$beta
+    knots <- basis$knots
+    beta <- basis$beta
   }
-  if(is.null(basis)&(is.null(knots)|is.null(beta))) #basis is null and some parameters are null
+  if (is.null(basis) & (is.null(knots) | is.null(beta))) #basis is null and some parameters are null
   {
-    print("some necessary parameters (knots/beta) are missing!")
+    print("Some necessary parameters (knots/beta) are missing!")
   }
+
   N_test <- ncs_basis(x_test, knots)
   y_pred <- N_test %*% beta
 
@@ -138,46 +139,5 @@ d_k_function <- function(x, k, knots, nknots)
     d_k = (max(0,x-knots[k])^3 - max(0,x-knots[nknots])^3) / (knots[nknots]-knots[k])
     return(d_k)
   }
-}
-
-
-#' Select smoothing parameter based on leave-one-out CV error
-#'
-#' @param x predictor variable.
-#' @param y response variable.
-#' @param cv_lambda vector of candidate lambda values, must be between 0 and 1.
-#'
-#' @return lamdba value that minimizes leave-one-out CV error.
-#' @export
-sel_smoothing_para <- function(x, y, cv_lambda) {
-  cv_size = length(cv_lambda)
-  cv_error <- array(0, dim=cv_size)
-  for (i in 1:cv_size) {
-    solution <- css_train(x, y, cv_lambda[i])
-    cv_error[i] <- cal_loo_cv_error(y, css_predict(solution, x), solution$S)
-  }
-
-  df <- as.data.frame(x = cv_lambda)
-  df[,2] <- cv_error
-  best_lambda <- df$cv_lambda[which.min(apply(df$V2,MARGIN=1,min))]  # get best lambda
-
-  return(best_lambda)
-  #return(df)
-}
-
-
-#' Calculte leave-one-out CV error
-#'
-#' @param y response variable values
-#' @param f_hat fitted response variable values
-#' @param S smoother matrix
-#'
-#' @return leave-one-out cross-validation error
-cal_loo_cv_error <- function(y, f_hat, S) {
-  residual <- y - f_hat
-  normalizing_weights <- 1 - diag(S)
-  cv_error <- mean((residual/normalizing_weights) ^ 2)
-
-  return(cv_error)
 }
 

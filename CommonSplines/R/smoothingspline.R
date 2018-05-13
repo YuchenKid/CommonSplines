@@ -1,7 +1,7 @@
-#' Train a smoothing spline with squared 2nd derivative penalty using natural cubic spline
+#' Train a smoothing spline with squared 2nd derivative penalty using natural cubic splines
 #'
 #' This function trains a smoothing spline with squared 2nd derivative penalty.
-#' It has an explicit,finite-dimensional,
+#' It has an explicit, finite-dimensional, 
 #' unique minimizer which is a natural cubic spline.
 #'
 #' @param x The input vector of training dataset.
@@ -11,7 +11,7 @@
 #' \item{beta}{ The coefficients of natural splines.}
 #' \item{S}{The smoother matrix.}
 #' \item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
-#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' @references Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 #'  Chapter 5.4.
 #'
 #' @examples
@@ -49,9 +49,9 @@ css_train<-function (x,y,lambda)
   solution<-list("beta"=beta,"S" = S, "knots"=x)
   return(solution)
 }
-#' Prediction using smoothing spline with squared 2nd derivative penalty
+#' Prediction using smoothing splines with squared 2nd derivative penalty
 #'
-#' This function takes the coefficients trained by \code{CubicSmoothingSpline.Train} and evaluate the output at x_test
+#' This function takes the coefficients trained by \code{css_train} and evaluates the output at x_test
 #'
 #' @param x_test The input values at which evaluations are required.
 #' @param basis The return value of function \code{css_train}.

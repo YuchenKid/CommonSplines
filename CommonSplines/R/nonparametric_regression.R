@@ -1,28 +1,28 @@
-#' Nonparametric Regression using spline based methods
+#' Nonparametric regression using spline-based methods
 #'
-#' This function provides regression using spline based methods. It finish both training procedure and predicting procedure.
+#' This function provides regression using spline-based methods. It finishes both the training and predicting procedure.
 #' Only univariate input can be used.
 #'
 #' @param x_train The input vector of training dataset.
 #' @param y_train The output vector of training dataset.
 #' @param x_test The input values at which evaluations are required.
-#' @param func The name of regression functions. It can be "pbs" for power basis spline,
-#' "ncs" for natural cubic spline, "css" for cubic smoothing spline, "bs" for B-spline. Default is "bs".
+#' @param func The name of regression functions. It can be "pbs" for power basis splines,
+#' "ncs" for natural cubic splines, "css" for cubic smoothing splines, "bs" for B-splines. Default is "bs".
 #' @param lambda The smoothing parameter for css. Default is 0.001.
-#' @param order The order that defines the spline. Default is 4.
+#' @param order The order that defines the spline. Default is 4 of a cubic order. 
 #' @param knots The innerknots and boundary knots that define the spline.
 #' The knots provided can be quantiles of x or real values.
 #' More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.
 #' @param df Degrees of freedom. One can supply df rather than knots.
 #' @seealso \code{generate_knots}.
-#' @param q A boolean variable define whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
+#' @param q A boolean variable indicating whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 #' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
 
 #' @return
-#' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
+#' \item{y_pred}{A vector of dimension \code{length(x)}, the prediction vector evaluated at x_test values.}
 #'
 #' @export
-#' @references "Friedman, J., Hastie, T., & Tibshirani, R. (2001). The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics,"
+#' @references Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 #' Chapter 5.
 #' @examples
 #' x_train <- seq(1, 10, 0.1)
@@ -63,7 +63,7 @@ np_reg<- function(x_train, y_train, x_test, func = 'bs',order=4,df = NULL, knots
   }
   return(y_pred)
 }
-#' Generate knots when real value is not specified.
+#' Generate knots when real values are not specified.
 #'
 #' @param x_train The input vector of training dataset.
 #' @param df Degrees of freedom. One can supply df rather than knots;
@@ -84,16 +84,16 @@ generate_knots<-function(x_train,df=NULL,knots=NULL,q=FALSE)
     df <- 4  # default 4 degrees of freedom
     nknots <- df + 1  # this formula applies only to ncs
     knots <- place_knots(nknots, x_train)
-  } else if (is.null(df)&q==TRUE) {  # knots is specified as quantiles of x
+  } else if (is.null(df) & q) {  # knots is specified as quantiles of x
     nknots <- length(knots)
     knots <- quantile(x_train, knots, type=1)
-  } else if (is.null(df)&q==FALSE) {  # knots is specified as real values of x
-    knots<-knots
+  } else if (is.null(df) & !q) {  # knots is specified as real values of x
+    knots <- knots
   } else if (is.null(knots)) {
     nknots <- df + 1
     knots <- place_knots(nknots, x_train)
-  }else{
-    print("degree of freedom/knots is required!")
+  } else {
+    print("One of (degree of freedom, knots) is required!")
   }
   return(knots)
 }
