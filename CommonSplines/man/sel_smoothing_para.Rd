@@ -20,14 +20,14 @@ lamdba value that minimizes leave-one-out CV error.
 Select smoothing parameter for smoothing splines based on leave-one-out CV error
 }
 \examples{
+set.seed(1)
 x_train <- seq(1, 10, 0.1)
 y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
 plot(x_train,y_train)
-title('Comparison of Different Degrees of Freedom')
 x_test <- seq(1, 10, 0.1)
 lines(x_test,cos(x_test)^3 * 3 - sin(x_test)^2 * 2 + x_test + exp(1),col="red")
 
-cv_lambda <- seq(0.0001,0.005,0.0001)
+cv_lambda <- seq(0.0001,0.002,0.0001)
 results <- sel_smoothing_para(x_train, y_train, cv_lambda)
 plot(results$df$cv_lambda, results$df$error, type="o")
 title('LOO CV Error of Different Lambdas')
