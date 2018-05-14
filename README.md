@@ -1,8 +1,9 @@
 # CommonSplines
 This is a R package that covers commonly seen nonparametric regression using spline-based methods. For regression spline, commonly seen basis functions are provided such as truncated power basis, natural cubic spline basis, and B-spline basis. For regularization, penalties on squared second-order derivative are provided, i.e., cubic smoothing spline. 
 
-This package mainly refers to:\
-Friedman, J., Hastie, T., & Tibshirani, R. (2001). [The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics](https://web.stanford.edu/~hastie/ElemStatLearn/), Chapter 5. 
+This package mainly refers to:
+
+**Friedman, J., Hastie, T., & Tibshirani, R. (2001). [The elements of statistical learning (Vol. 1, pp. 337-387). New York: Springer series in statistics](https://web.stanford.edu/~hastie/ElemStatLearn/), Chapter 5.** 
 
 Below are the steps to install it and try it out. 
 
