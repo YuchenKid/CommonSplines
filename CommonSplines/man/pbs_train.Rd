@@ -2,7 +2,7 @@
 % Please edit documentation in R/power_basis_spline.R
 \name{pbs_train}
 \alias{pbs_train}
-\title{Regression using Power Basis spline}
+\title{Regression using truncated power basis spline}
 \usage{
 pbs_train(x, y, order, df = NULL, knots = NULL, q = FALSE)
 }
@@ -32,9 +32,11 @@ A list with the following components:
 \item{order}{The order of basis functions. order=degree+1}
 }
 \description{
-This function provides regressions using Power Basis splines. The basis are defined as
+This function provides regressions using truncated power basis spline. The basis are defined as
 1,x,x^2,...,x^m,(x-k1)^(m-1)+,(x-k2)^(m-1)+,...,(x-kn)^(m-1)+
 where m is the order, k1, k2 and kn are n knots, '+' denotes the positive part.
+}
+\details{
 Only univariate input can be used.
 }
 \examples{
