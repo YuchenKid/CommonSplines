@@ -1,27 +1,28 @@
 #' Train a smoothing spline with squared 2nd derivative penalty using natural cubic splines
 #'
 #' This function trains a smoothing spline with squared 2nd derivative penalty.
-#' It has an explicit, finite-dimensional, 
+#' It has an explicit, finite-dimensional,
 #' unique minimizer which is a natural cubic spline.
 #'
 #' @param x The input vector of training dataset.
 #' @param y The output vector of training dataset.
-#' @param lambda A fixed smoothing parameter.
+#' @param lambda A fixed smoothing parameter. It can be selected by \code{sel_smoothing_para}.
 #' @return A list with the following components:
 #' \item{beta}{ The coefficients of natural splines.}
-#' \item{S}{The smoother matrix.}
+#' \item{S}{The smoother matrix. It can be used for cross validation}
 #' \item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
 #' @references Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
 #'  Chapter 5.4.
 #'
+#' @seealso \code{css_predict},\code{np_reg},\code{sel_smoothing_para}
 #' @examples
-#' x<-seq(0, 1, 0.001)
+#' x<-seq(0, 1, 0.01)
 #' y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 #' plot(x,y)
 #' lambda<-0.001
 #'
 #' basis<-css_train(x,y,lambda)
-#' cat("the knots chosen are: ",basis$knots)
+#' cat("the trained coefficients are: ",basis$beta)
 #' @export
 
 css_train<-function (x,y,lambda)
@@ -73,7 +74,7 @@ css_train<-function (x,y,lambda)
 #'
 #' plot(x_test,fit)
 #' lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
-
+#' @seealso \code{css_train},\code{np_reg}
 #' @export
 css_predict<-function (x_test,knots=NULL,beta=NULL,basis=NULL)
 {

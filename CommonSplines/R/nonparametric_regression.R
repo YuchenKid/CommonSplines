@@ -9,12 +9,12 @@
 #' @param func The name of regression functions. It can be "pbs" for power basis splines,
 #' "ncs" for natural cubic splines, "css" for cubic smoothing splines, "bs" for B-splines. Default is "bs".
 #' @param lambda The smoothing parameter for css. Default is 0.001.
-#' @param order The order that defines the spline. Default is 4 of a cubic order. 
+#' @param order The order that defines the spline. Default is 4 of a cubic order.
 #' @param knots The innerknots and boundary knots that define the spline.
 #' The knots provided can be quantiles of x or real values.
 #' More explanation of \code{knots}, \code{df}, \code{q} can be seen in \code{generate_knots}.
 #' @param df Degrees of freedom. One can supply df rather than knots.
-#' @seealso \code{generate_knots}.
+#' @seealso \code{generate_knots}, \code{bs_train},\code{pbs_train}, \code{css_train},\code{ncs_train}.
 #' @param q A boolean variable indicating whether \code{knots} provided are quantiles or real values. When \code{q}=TRUE, \code{knots}
 #' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x. Default is FALSE.
 
@@ -76,6 +76,7 @@ np_reg<- function(x_train, y_train, x_test, func = 'bs',order=4,df = NULL, knots
 #' provided are quantiles of x. When \code{q}=FALSE, \code{knots} provided are real values of x.
 
 #' @return A vector of knots in terms of real values of x.
+
 #' @export
 generate_knots<-function(x_train,df=NULL,knots=NULL,q=FALSE)
 {

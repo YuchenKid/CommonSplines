@@ -36,3 +36,6 @@ fit<-css_predict(x_test=x_test,basis=basis)
 plot(x_test,fit)
 lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 }
+\seealso{
+\code{css_train},\code{np_reg}
+}

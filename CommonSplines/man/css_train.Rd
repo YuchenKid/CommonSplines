@@ -11,29 +11,32 @@ css_train(x, y, lambda)
 
 \item{y}{The output vector of training dataset.}
 
-\item{lambda}{A fixed smoothing parameter.}
+\item{lambda}{A fixed smoothing parameter. It can be selected by \code{sel_smoothing_para}.}
 }
 \value{
 A list with the following components:
 \item{beta}{ The coefficients of natural splines.}
-\item{S}{The smoother matrix.}
+\item{S}{The smoother matrix. It can be used for cross validation}
 \item{knots}{The knots used to construct the B-splines, including innerknots, boundary knots and phantom knots}
 }
 \description{
 This function trains a smoothing spline with squared 2nd derivative penalty.
-It has an explicit, finite-dimensional, 
+It has an explicit, finite-dimensional,
 unique minimizer which is a natural cubic spline.
 }
 \examples{
-x<-seq(0, 1, 0.001)
+x<-seq(0, 1, 0.01)
 y <- x^3 * 3 - x^2 * 2 + x + exp(1)+rnorm(length(x),0,0.1)
 plot(x,y)
 lambda<-0.001
 
 basis<-css_train(x,y,lambda)
-cat("the knots chosen are: ",basis$knots)
+cat("the trained coefficients are: ",basis$beta)
 }
 \references{
 Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical Learning (Vol. 1, pp. 337-387). New York: Springer series in statistics.
  Chapter 5.4.
+}
+\seealso{
+\code{css_predict},\code{np_reg},\code{sel_smoothing_para}
 }

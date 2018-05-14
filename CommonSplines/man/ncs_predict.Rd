@@ -23,3 +23,6 @@ Instead of specify \code{knots} and \code{beta},One can supply \code{basis} dire
 \description{
 Prediction using regression by natural cubic splines.
 }
+\seealso{
+\code{ncs_train}, \code{np_reg}
+}

@@ -30,7 +30,7 @@ A list of following components:
 \item{betas}{Least sqaure fit parameters.}
 }
 \description{
-In the least square fitting of nonparametric egression coefficients,
+In the least square fitting of nonparametric regression coefficients,
 Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
 }
 \examples{
@@ -48,4 +48,7 @@ Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical L
 Chapter 5.2.1.
 
 Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
+}
+\seealso{
+\code{ncs_predict}, \code{np_reg}
 }

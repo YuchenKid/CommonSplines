@@ -1,6 +1,6 @@
 #' Train regression coefficients for natural cubic splines.
 #'
-#' In the least square fitting of nonparametric egression coefficients,
+#' In the least square fitting of nonparametric regression coefficients,
 #' Moore-Penrose generalized inverse (ginv\{MASS\}) is used to aviod computational problems.
 #'
 #' @param x_train The input vector of training dataset.
@@ -24,6 +24,7 @@
 #'
 #' Venables, W. N. and Ripley, B. D. (1999) Modern Applied Statistics with S-PLUS. Third Edition. Springer. p.100.
 #'
+#' @seealso \code{ncs_predict}, \code{np_reg}
 #' @examples
 #' x_train <- seq(1, 10, 0.1)
 #' y_train <- cos(x_train)^3 * 3 - sin(x_train)^2 * 2 + x_train + exp(1)+rnorm(length(x_train),0,1)
@@ -61,6 +62,7 @@ ncs_train <- function(x_train, y_train, df = NULL, knots = NULL, q = FALSE)
 #'
 #' @return
 #' \item{y_pred}{A vector of dimension length(x), the prediction vector evaluated at x_test values.}
+#' @seealso \code{ncs_train}, \code{np_reg}
 #' @export
 ncs_predict <- function(x_test,knots=NULL,beta=NULL,basis=NULL)
 {

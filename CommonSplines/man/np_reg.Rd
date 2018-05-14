@@ -62,5 +62,5 @@ Friedman, J., Hastie, T., & Tibshirani, R. (2001). The Elements of Statistical L
 Chapter 5.
 }
 \seealso{
-\code{generate_knots}.
+\code{generate_knots}, \code{bs_train},\code{pbs_train}, \code{css_train},\code{ncs_train}.
 }

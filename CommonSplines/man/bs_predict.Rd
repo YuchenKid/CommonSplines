@@ -42,5 +42,5 @@ plot(x_test,fit)
 lines(x_test,x_test^3 * 3 - x_test^2 * 2 + x_test + exp(1),col="red")
 }
 \seealso{
-\code{bs_basis}, \code{bs_train}, \code{bs_knots}.
+\code{bs_basis},\code{bs_knots}, \code{bs_train}, \code{np_reg}.
 }
